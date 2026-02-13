@@ -57,7 +57,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: #131313;
   --primary-foreground: #424242;
-  --secondary: #628B3D;
+  --secondary: #628b3d;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -91,7 +91,7 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: #131313;
   --primary-foreground: #424242;
-  --secondary: #628B3D;
+  --secondary: #628b3d;
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -124,5 +124,21 @@
   body {
     @apply bg-background text-foreground;
     @apply bg-background text-foreground;
+  }
+}
+
+h2 {
+  font-size: 32px;
+  color:var(--primary)
+}
+p {
+  font-size: 16px;
+  color:var(--primary-foreground);
+  font-weight: normal;
+}
+@media (min-width: 768px) {
+  h2 {
+    font-size: 40px;
+
   }
 }

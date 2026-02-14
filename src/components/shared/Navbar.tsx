@@ -11,33 +11,19 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Past projects", href: "/pastprojects" },
   { label: "Floor plans/services", href: "/floorplans" },
-  { label: "Our Team", href: "#" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Our Team", href: "/team" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState("");
   const pathname = usePathname();
-
-  React.useEffect(() => {
-    const handleHashChange = () => {
-      setActiveHash(window.location.hash);
-    };
-
-    // Set initial hash on mount
-    setActiveHash(window.location.hash);
-
-    window.addEventListener("hashchange", handleHashChange);
-
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
 
   const isActive = (href: string) => {
     if (href === "/") {
-      return pathname === "/" && !activeHash;
+      return pathname === "/";
     }
-    return activeHash === href;
+    return pathname === href;
   };
 
   return (

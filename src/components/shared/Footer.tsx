@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
-import { LocateIcon } from "lucide-react";
+import { LocateIcon, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -78,7 +78,7 @@ const Footer = () => {
               Service Area
             </h4>
             <div className="mt-3 text-sm text-[#6f6a64] flex items-start gap-3">
-              <LocateIcon className=" text-red-600" />
+              <MapPin  className=" text-red-600" />
               <div>
                 <p className="font-semibold text-[#2a2a2a]">
                   Northeast Wyoming

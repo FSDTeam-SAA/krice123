@@ -7,19 +7,19 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 md:gap-16 relative">
+    <div className="grid grid-cols-1 md:grid-cols-2 relative min-h-screen">
       {/* left side image  */}
-      <div>
+      <div className="hidden md:block">
         <Image
           src={"/images/login.jpg"}
           width={720}
           height={1080}
           alt="Auth background"
-          className="w-full aspect-square object-cover"
+          className="w-full h-full object-cover"
         />
       </div>
       {/* right side content  */}
-      <div className="w-1/2 h-full flex items-center justify-center">{children}</div>
+      <div className="flex items-center justify-center p-4">{children}</div>
     </div>
   );
 }

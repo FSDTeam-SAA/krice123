@@ -213,9 +213,9 @@ export default function RegisterPage() {
       {/* Login Link */}
       <div className="text-center">
         <p className="text-sm text-[#7a746e]">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
-            href="/login"
+            href="/(auth)/login"
             className="font-semibold text-[#6a8f3e] hover:underline"
           >
             Log in

@@ -43,7 +43,7 @@ function ForgetPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#faf8f6] p-4">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="w-[500px] bg-white rounded-2xl shadow-lg px-8 py-10">
         <div className="text-left">
           <h1 className="text-3xl font-bold text-secondary">Forgot Password</h1>

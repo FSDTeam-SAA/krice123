@@ -56,9 +56,12 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <button className="text-base font-medium text-secondary hover:text-[#2f3628] transition-colors cursor-pointer">
+          <Link
+            href="/(website)/acount"
+            className="text-base font-medium text-secondary hover:text-[#2f3628] transition-colors cursor-pointer"
+          >
             Log in
-          </button>
+          </Link>
           <Button className="rounded-full bg-[#6a8f3e] px-5 text-sm md:text-base text-white hover:bg-[#5b7c35] transition-colors">
             Get a Free Quote
           </Button>
@@ -96,9 +99,12 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="space-y-2 border-t border-[#e3ddd4] pt-3">
-              <button className="block w-full rounded-lg px-3 py-2 text-left text-secondary hover:bg-[#e8e2d9] transition-colors font-semibold">
+              <Link
+                href="/(website)/acount"
+                className="block w-full rounded-lg px-3 py-2 text-left text-secondary hover:bg-[#e8e2d9] transition-colors font-semibold"
+              >
                 Log in
-              </button>
+              </Link>
               <Button className="w-full rounded-full bg-[#6a8f3e] text-white hover:bg-[#5b7c35] transition-colors">
                 Get a Free Quote
               </Button>

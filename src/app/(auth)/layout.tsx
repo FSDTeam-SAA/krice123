@@ -8,7 +8,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 relative min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-2 relative h-screen">
       {/* left side image  */}
       <div className="hidden md:block">
         <Image
@@ -16,7 +16,7 @@ export default function AuthLayout({
           width={720}
           height={1080}
           alt="Auth background"
-          className="w-full h-full object-cover"
+          className=" object-cover"
         />
       </div>
       {/* right side content  */}

@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 const sidebarLinks = [
-  { label: "Personal Information", href: "/(website)/acount" },
-  { label: "Change Password", href: "/(website)/acount/change-password" },
+  { label: "Personal Information", href: "/acount" },
+  { label: "Change Password", href: "/acount/change-password" },
 ];
 
 export default function AccountLayout({
@@ -18,8 +18,8 @@ export default function AccountLayout({
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    if (href === "/(website)/acount") {
-      return pathname === "/(website)/acount";
+    if (href === "/acount") {
+      return pathname === "/acount";
     }
     return pathname === href;
   };

@@ -41,7 +41,7 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAF8F6] p-4">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-10">
         {/* Header */}
         <div className="text-left">

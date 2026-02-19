@@ -88,7 +88,7 @@ function VerifyOTPForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FAF8F6] p-4">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white w-full max-w-xl rounded-2xl shadow-md p-10">
         <div className="text-left">
           <h2 className="text-3xl font-semibold text-secondary mb-2">

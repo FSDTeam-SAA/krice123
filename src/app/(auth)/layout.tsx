@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { Toaster } from "sonner";
 
 export default function AuthLayout({
   children,
@@ -20,6 +21,7 @@ export default function AuthLayout({
       </div>
       {/* right side content  */}
       <div className="flex items-center justify-center p-4">{children}</div>
+      <Toaster richColors position="top-right" />
     </div>
   );
 }

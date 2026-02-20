@@ -74,12 +74,15 @@ const handler = NextAuth({
           const result = await res.json();
 
           if (!res.ok || !result.success) {
+            console.error("Login failed:", {
+              status: res.status,
+              result,
+            });
             throw new Error(result.message || "Login failed");
           }
 
           const { user, accessToken, refreshToken } = result.data;
 
-          // ✅ Make sure to return a user object, not throw
           return {
             id: user.id || user._id,
             email: user.email,
@@ -90,9 +93,9 @@ const handler = NextAuth({
             accessToken,
             refreshToken,
           };
-        } catch (error) {
-          console.error("Authorize Error:", error);
-          return null; // Returning null triggers 401
+        } catch (error: any) {
+          console.error("Authorize Error:", error.message);
+          throw new Error(error.message || "Login failed"); 
         }
       },
     }),

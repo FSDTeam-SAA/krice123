@@ -1,38 +1,69 @@
+"use client";
 import React from "react";
 import ProjectLeaderCard from "@/components/shared/ProjectLeaderCard";
-
-const leaders = [
-  {
-    image: "/images/team/team1.png",
-    name: "Keefe Rice",
-    role: "Owner & Project Manager",
-    description:
-      "Direct oversight from start to finish. Budgeting, scheduling, coordination, and decisions stay clear and accountable.",
-  },
-  {
-    image: "/images/team/team2.jpg",
-    name: "Rick O’Neill",
-    role: "Foreman",
-    description:
-      "On site daily. Manages crews, quality, and safety to keep projects moving efficiently.",
-  },
-  {
-    image: "/images/team/team3.jpg",
-    name: "Tyson McDougall",
-    role: "Concrete & Rough Framing Foreman",
-    description:
-      "Over 20 years of experience. Responsible for foundations and structure.",
-  },
-  {
-    image: "/images/team/team4.jpg",
-    name: "Bev Taylor",
-    role: "Office Manager",
-    description:
-      "Handles communication, paperwork, and keeps everything organized.",
-  },
-];
+import { useTeam } from "@/lib/hooks/useTeam";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProjectLeader = () => {
+  const { data: teamMembers = [], isLoading, isError } = useTeam();
+
+  if (isLoading) {
+    return (
+      <section className="bg-[#f7f4ef] py-12 md:py-16">
+        <div className="container mx-auto space-y-8 px-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold uppercase tracking-wide text-[#2a2a2a] md:text-3xl">
+              Project Leaders
+            </h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl overflow-hidden shadow-sm"
+              >
+                <Skeleton className="h-64 w-full rounded-none" />
+                <div className="p-4 space-y-2">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="bg-[#f7f4ef] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-lg text-red-600">
+              Failed to load team members. Please try again later.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (teamMembers.length === 0) {
+    return (
+      <section className="bg-[#f7f4ef] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-lg text-[#6f6a64]">No team members available.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="bg-[#f7f4ef] py-12 md:py-16">
       <div className="container mx-auto space-y-8 px-4">
@@ -43,13 +74,13 @@ const ProjectLeader = () => {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {leaders.map((leader) => (
+          {teamMembers.map((member) => (
             <ProjectLeaderCard
-              key={leader.name}
-              image={leader.image}
-              name={leader.name}
-              role={leader.role}
-              description={leader.description}
+              key={member._id}
+              image={member.image}
+              name={member.name}
+              role={member.role}
+              description={member.description}
             />
           ))}
         </div>

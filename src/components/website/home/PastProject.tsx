@@ -1,37 +1,18 @@
+"use client";
 import React from "react";
-
+import { useProject } from "@/lib/hooks/useProject";
 import PastProjectCard from "@/components/shared/PastProjectCard";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { MoveRight } from "lucide-react";
-
-const pastProjects = [
-  {
-    image: "/images/pastproject.png",
-    title: "Skyline Residency Premium Living Spaces",
-    description:
-      "Interior finishes are what makes a house feel like a home. At Klondike Construction we put thoughtful details like recessed lights, vaulted ceilings, and a cohesive material selections to create...",
-  },
-  {
-    image: "/images/pastproject2.png",
-    title: "Skyline Residency Premium Living Spaces",
-    description:
-      "Interior finishes are what makes a house feel like a home. At Klondike Construction we put thoughtful details like recessed lights, vaulted ceilings, and a cohesive material selections to create...",
-  },
-  {
-    image: "/images/pastproject3.png",
-    title: "Elite Brick Project Built With Excellence",
-    description:
-      "This half bath makes a bold statement with vertical shiplap, warm wood tones, and modern fixture selections. Clean lines, a sleek vanity, and contemporary lighting create a refined space...",
-  },
-  {
-    image: "/images/pastproject4.png",
-    title: "Royal Crest Homes Designed For Comfort",
-    description:
-      "This exterior highlights Klondike Construction's focus on clean lines, durability and thoughtful outdoor living. Low-maintenance siding, a well proportioned roofline, and a covered patio...",
-  },
-];
+import Link from "next/link";
 
 const PastProject = () => {
+  const { data: projects = [], isLoading } = useProject();
+
+  // Get only first 4 projects
+  const displayProjects = projects.slice(0, 4);
+
   return (
     <section id="past-projects" className="bg-[#f0ebe4] py-12 md:py-16">
       <div className="container mx-auto space-y-8 px-4">
@@ -45,26 +26,52 @@ const PastProject = () => {
               Extensive remodel
             </h2>
           </div>
-          <Button
-            variant="ghost"
-            className="gap-2  flex items-centertext-base font-semibold text-[#6a8f3e] hover:bg-transparent hover:text-[#5b7c35]"
-          >
-            See all
-            {/* <span aria-hidden>→</span> */}
-            <MoveRight />
-          </Button>
+          <Link href="/pastprojects">
+            <Button
+              variant="ghost"
+              className="gap-2  flex items-centertext-base font-semibold text-[#6a8f3e] hover:bg-transparent hover:text-[#5b7c35]"
+            >
+              See all
+              {/* <span aria-hidden>→</span> */}
+              <MoveRight />
+            </Button>
+          </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {pastProjects.map((project) => (
-            <PastProjectCard
-              key={project.title + project.image}
-              image={project.image}
-              title={project.title}
-              description={project.description}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid gap-6 md:grid-cols-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-[#e3ddd4] bg-white overflow-hidden"
+              >
+                <Skeleton className="h-64 w-full rounded-none" />
+                <div className="p-6 space-y-3">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : displayProjects.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2">
+            {displayProjects.map((project) => (
+              <PastProjectCard
+                key={project._id}
+                projectId={project._id}
+                image={project.thumbnailImage}
+                title={project.title}
+                description={project.description}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-lg text-[#6f6a64]">No projects available.</p>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export default function Login() {
@@ -19,6 +19,24 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Check for auth errors from NextAuth redirect
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      const errorMessages: Record<string, string> = {
+        CredentialsSignin: "Invalid email or password. Please try again.",
+        Callback: "An error occurred during login. Please try again.",
+        OAuthSignin: "Error connecting to authentication provider.",
+        OAuthCallback: "Error during authentication callback.",
+        EmailSigninEmail: "Check your email for the sign-in link.",
+        SessionCallback: "Unable to sign in. Please try again.",
+        default: "Login failed. Please try again.",
+      };
+      toast.error(errorMessages[error] || errorMessages.default);
+    }
+  }, [searchParams]);
 
   const handleSignIn = async () => {
     setIsLoading(true);
@@ -44,8 +62,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
-      <div className="w-[500px] bg-white rounded-2xl shadow-lg px-8 py-10">
+    <div className=" ">
+      <div className=" bg-white rounded-2xl shadow-lg px-8 py-10">
         {/* Heading */}
         <div className="flex justify-center mb-6">
           <Image
@@ -53,6 +71,7 @@ export default function Login() {
             alt="Klondike Construction"
             width={150}
             height={50}
+            className=" object-cover w-full  h-full"
           />
         </div>
         <div className="text-left mb-6">
@@ -128,13 +147,22 @@ export default function Login() {
 
           {/* Button */}
           <Button
-            className="w-full bg-primary text-white py-5 cursor-pointer"
+            className="w-full bg-[#628B3D] hover:bg-[#527735] text-white py-5 cursor-pointer"
             onClick={handleSignIn}
             disabled={isLoading}
           >
             {isLoading ? "Logging in..." : "Log In"}
           </Button>
         </div>
+        <Button
+          variant="link"
+          className="w-full text-center mt-4 text-sm text-gray-600 hover:text-gray-800"
+        >
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-[#23547B] hover:underline">
+            Register Here
+          </Link>
+        </Button>
       </div>
     </div>
   );

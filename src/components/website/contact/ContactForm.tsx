@@ -4,6 +4,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useCreateContact } from "@/lib/hooks/useContact";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,25 +35,34 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
+  address: z.string().min(5, {
+    message: "Address must be at least 5 characters.",
+  }),
   message: z.string().min(10, {
     message: "Message must be at least 10 characters.",
   }),
 });
 
 const ContactForm = () => {
+  const { mutate: sendContact, isPending } = useCreateContact();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
       phoneNumber: "",
       email: "",
+      address: "",
       message: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Handle form submission here
+    sendContact(values, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   }
 
   return (
@@ -208,7 +218,27 @@ const ContactForm = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter Your First Name"
+                          placeholder="Enter Your Email Address"
+                          {...field}
+                          className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-[#2a2a2a]">
+                        Address <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter Your Address"
                           {...field}
                           className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
                         />
@@ -241,10 +271,11 @@ const ContactForm = () => {
 
                 <Button
                   type="submit"
-                  className="w-full rounded-lg bg-[#6a8f3e] py-6 text-base font-semibold text-white transition-all hover:bg-[#5b7c35]"
+                  disabled={isPending}
+                  className="w-full rounded-lg bg-[#6a8f3e] py-6 text-base font-semibold text-white transition-all hover:bg-[#5b7c35] disabled:opacity-50"
                 >
                   <Send className="mr-2 h-5 w-5" />
-                  Send Message
+                  {isPending ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </Form>

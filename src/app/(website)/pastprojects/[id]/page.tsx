@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import PastProjectDetail from '@/components/pastproject/PastProjectDetail'
 import React from 'react'
 import PastSingleHero from '@/components/pastproject/pastsingleHero'

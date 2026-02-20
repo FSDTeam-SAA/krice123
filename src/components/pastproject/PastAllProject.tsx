@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import PastProjectCard from "@/components/shared/PastProjectCard";
-import { pastProjectsData } from "@/lib/pastprojectData";
+import { useProject } from "@/lib/hooks/useProject";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -9,11 +9,12 @@ const ITEMS_PER_PAGE = 8;
 
 const PastAllProject = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { data: projects = [], isLoading, isError } = useProject();
 
-  const totalPages = Math.ceil(pastProjectsData.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentProjects = pastProjectsData.slice(startIndex, endIndex);
+  const currentProjects = projects.slice(startIndex, endIndex);
 
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -26,6 +27,38 @@ const PastAllProject = () => {
   const handlePageClick = (page: number) => {
     setCurrentPage(page);
   };
+
+  if (isLoading) {
+    return (
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="text-center">
+          <p className="text-lg text-[#6f6a64]">Loading projects...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="text-center">
+          <p className="text-lg text-red-600">
+            Failed to load projects. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="text-center">
+          <p className="text-lg text-[#6f6a64]">No projects available.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="container mx-auto px-4 py-12 md:py-16">
@@ -42,9 +75,9 @@ const PastAllProject = () => {
       <div className="grid gap-6 md:grid-cols-2 mb-10">
         {currentProjects.map((project) => (
           <PastProjectCard
-            key={project.id}
-            projectId={project.id}
-            image={project.beforeImage}
+            key={project._id}
+            projectId={project._id}
+            image={project.thumbnailImage}
             title={project.title}
             description={project.description}
           />
@@ -96,8 +129,8 @@ const PastAllProject = () => {
       )}
 
       <div className="text-center mt-6 text-sm text-[#6f6a64]">
-        Showing {startIndex + 1}-{Math.min(endIndex, pastProjectsData.length)}{" "}
-        of {pastProjectsData.length} projects
+        Showing {startIndex + 1}-{Math.min(endIndex, projects.length)} of{" "}
+        {projects.length} projects
       </div>
     </section>
   );

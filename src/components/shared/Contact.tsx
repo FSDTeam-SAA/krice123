@@ -1,9 +1,42 @@
+"use client";
 import Image from "next/image";
-import React from "react";
-
+import React, { useState } from "react";
+import { useCreateContact } from "@/lib/hooks/useContact";
 import { Button } from "@/components/ui/button";
 
 const Contact = () => {
+  const { mutate: sendContact, isPending } = useCreateContact();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    address: "",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendContact(formData, {
+      onSuccess: () => {
+        setFormData({
+          fullName: "",
+          phoneNumber: "",
+          email: "",
+          address: "",
+          message: "",
+        });
+      },
+    });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
     <section id="contact" className="bg-[#f7f4ef] py-12 md:py-16">
       <div className="container mx-auto space-y-8 px-4">
@@ -30,13 +63,17 @@ const Contact = () => {
               Please fill out the form below to contact us.
             </p> */}
 
-            <form className="mt-5 space-y-6">
+            <form className="mt-5 space-y-6" onSubmit={handleSubmit}>
               <div className="grid gap-4  sm:grid-cols-2">
                 <label className="text-base font-medium text-[#2A2A2A]">
                   Full Name *
                   <input
                     type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
                     placeholder="Enter Your First Name"
+                    required
                     className="mt-2 w-full rounded-lg border border-[#e3ddd4] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none focus:border-[#6a8f3e]"
                   />
                 </label>
@@ -44,7 +81,11 @@ const Contact = () => {
                   Phone Number *
                   <input
                     type="text"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
                     placeholder="Enter Your Phone Number"
+                    required
                     className="mt-2 w-full rounded-lg border border-[#e3ddd4] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none focus:border-[#6a8f3e]"
                   />
                 </label>
@@ -54,7 +95,26 @@ const Contact = () => {
                   Email Address *
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="Enter Your Email Address"
+                    required
+                    className="mt-2 w-full rounded-lg border border-[#e3ddd4] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none focus:border-[#6a8f3e]"
+                  />
+                </label>
+              </div>
+
+              <div>
+                <label className="text-base font-medium text-[#2A2A2A]">
+                  Address *
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="Enter Your Address"
+                    required
                     className="mt-2 w-full rounded-lg border border-[#e3ddd4] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none focus:border-[#6a8f3e]"
                   />
                 </label>
@@ -64,6 +124,9 @@ const Contact = () => {
                 <label className="text-base font-medium text-[#2A2A2A]">
                   Your Message
                   <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tell us how we can help you"
                     rows={4}
                     className="mt-2 w-full rounded-lg border border-[#e3ddd4] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none focus:border-[#6a8f3e]"
@@ -71,8 +134,12 @@ const Contact = () => {
                 </label>
               </div>
 
-              <Button className="w-full rounded-md bg-[#6a8f3e] text-white hover:bg-[#5b7c35]">
-                Send Message
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="w-full rounded-md bg-[#6a8f3e] text-white hover:bg-[#5b7c35] disabled:opacity-50"
+              >
+                {isPending ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>

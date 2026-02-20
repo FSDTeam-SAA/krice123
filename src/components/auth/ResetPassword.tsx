@@ -103,7 +103,7 @@ function ResetPasswordForm() {
 
         {/* Save Button */}
         <Button
-          className={`w-full bg-primary text-white py-6 rounded-md text-lg font-medium hover:bg-primary transition flex justify-center items-center gap-2 cursor-pointer ${
+          className={`w-full bg-[#628B3D] hover:bg-[#527735] text-white py-6 rounded-md text-lg font-medium transition flex justify-center items-center gap-2 cursor-pointer ${
             loading ? "cursor-not-allowed opacity-70" : ""
           }`}
           onClick={handleSave}

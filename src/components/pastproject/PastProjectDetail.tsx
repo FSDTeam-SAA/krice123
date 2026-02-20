@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { pastProjectsData } from "@/lib/pastprojectData";
+import { useProjectById } from "@/lib/hooks/useProject";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BanIcon } from "lucide-react";
 
@@ -12,10 +12,19 @@ interface PastProjectDetailProps {
 
 const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
   const router = useRouter();
+  const { data: project, isLoading, isError } = useProjectById(projectId);
 
-  const project = pastProjectsData.find((p) => p.id === projectId);
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center">
+        <h2 className="text-2xl font-bold text-[#2a2a2a] mb-4">
+          Loading project...
+        </h2>
+      </div>
+    );
+  }
 
-  if (!project) {
+  if (isError || !project) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <h2 className="text-2xl font-bold text-[#2a2a2a] mb-4">
@@ -33,8 +42,6 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
 
   return (
     <div className="bg-[#f7f4ef]">
-
-
       <section className="container mx-auto px-4 py-12 md:py-16">
         <div className="bg-white rounded-2xl border border-[#e3ddd4] overflow-hidden">
           <div className="p-6 md:p-10">
@@ -52,14 +59,14 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
               <p className="text-[#6f6a64]">Designed For Comfort</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-12 items-center">
+            <div className="relative grid md:grid-cols-2 gap-6 md:gap-14 mb-12 items-center">
               <div className="space-y-3">
                 <p className="text-xs font-semibold text-[#6a8f3e] uppercase">
                   Past House
                 </p>
                 <div className="relative rounded-2xl overflow-hidden h-64 md:h-80 w-full">
                   <Image
-                    src={project.beforeImage}
+                    src={project.pastImage}
                     alt="Before"
                     fill
                     className="object-cover"
@@ -67,9 +74,9 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
                 </div>
               </div>
 
-              <div className="flex justify-center md:justify-end mb-4 md:mb-0">
-                <div className="flex items-center gap-4">
-                  <ArrowRight size={40} className="text-[#6a8f3e] rotate-0" />
+              <div className="md:absolute md:top-1/2 md:right-1/2 left-1/2 flex justify-center md:justify-center   md:mb-0">
+                <div className="flex items-center gap-0">
+                  <ArrowRight size={40} className="text-[#6a8f3e] rotate-90 md:rotate-0" />
                 </div>
               </div>
 
@@ -79,7 +86,7 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
                 </p>
                 <div className="relative rounded-2xl overflow-hidden h-64 md:h-80 w-full">
                   <Image
-                    src={project.afterImage}
+                    src={project.remodelImage}
                     alt="After"
                     fill
                     className="object-cover"
@@ -96,35 +103,6 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
                 <p className="text-sm md:text-base leading-7 text-[#6f6a64] mb-6">
                   {project.description}
                 </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <ul className="space-y-3">
-                    {project.keyPoints.slice(0, 3).map((point, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-3 text-sm text-[#6f6a64]"
-                      >
-                        <span className="h-1.5 w-1.5 bg-[#6a8f3e] rounded-full mt-2 flex-shrink-0" />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <ul className="space-y-3">
-                    {project.keyPoints.slice(3, 6).map((point, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-3 text-sm text-[#6f6a64]"
-                      >
-                        <span className="h-1.5 w-1.5 bg-[#6a8f3e] rounded-full mt-2 flex-shrink-0" />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
               </div>
 
               <div className="pt-6 border-t border-[#e3ddd4]">

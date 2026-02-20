@@ -59,7 +59,7 @@ const Banner = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <Button className="rounded-md text-base font-bold bg-[#6a8f3e] px-5 text-white hover:bg-[#5b7c35]">
+            <Button className="rounded-md text-base font-bold bg-[#628B3D] px-5 text-white hover:bg-[#5b7c35]">
               Get a Free Quote
             </Button>
             <Button

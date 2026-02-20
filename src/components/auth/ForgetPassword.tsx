@@ -34,7 +34,7 @@ function ForgetPasswordForm() {
 
       setTimeout(() => {
         router.push(
-          `/verify-otp${accessToken ? `?token=${encodeURIComponent(accessToken)}` : ""}`
+          `/verify-otp${accessToken ? `?token=${encodeURIComponent(accessToken)}` : ""}`,
         );
       }, 1000);
     } else {
@@ -65,7 +65,7 @@ function ForgetPasswordForm() {
           </div>
 
           <Button
-            className="w-full bg-primary hover:bg-primary text-white cursor-pointer"
+            className="w-full bg-[#628B3D] hover:bg-[#527735] text-white cursor-pointer"
             onClick={handleSendCode}
             disabled={loading}
           >

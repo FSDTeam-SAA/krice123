@@ -38,7 +38,12 @@ export default function Register() {
     setIsLoading(true);
 
     // Validation
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.email ||
+      !formData.password
+    ) {
       toast.error("Please fill in all required fields.");
       setIsLoading(false);
       return;
@@ -59,7 +64,7 @@ export default function Register() {
     try {
       // TODO: Implement actual registration API call
       // const result = await signUp(formData);
-      
+
       toast.success("Account created successfully!");
       setTimeout(() => {
         router.push("/login");
@@ -72,8 +77,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-[500px] bg-white rounded-2xl shadow-lg px-8 py-10">
+    <div className="flex items-center justify-center bg-[#FFFFFF]">
+      <div className=" bg-white rounded-2xl shadow-lg px-8 py-10">
         {/* Heading */}
         <div className="flex justify-center mb-6">
           <Image
@@ -202,8 +207,8 @@ export default function Register() {
 
           {/* Terms & Conditions */}
           <div className="flex items-center space-x-2">
-            <Checkbox 
-              id="terms" 
+            <Checkbox
+              id="terms"
               checked={agreeToTerms}
               onCheckedChange={(checked) => setAgreeToTerms(checked as boolean)}
             />
@@ -212,10 +217,7 @@ export default function Register() {
               className="text-sm text-gray-600 cursor-pointer"
             >
               I agree to the{" "}
-              <Link
-                href="#"
-                className="text-[#E53838] hover:underline"
-              >
+              <Link href="#" className="text-[#E53838] hover:underline">
                 terms & conditions
               </Link>
             </label>
@@ -223,7 +225,7 @@ export default function Register() {
 
           {/* Button */}
           <Button
-            className="w-full bg-primary text-white py-5 cursor-pointer"
+            className="w-full bg-[#628B3D] hover:bg-[#527735] text-white py-5 cursor-pointer"
             onClick={handleRegister}
             disabled={isLoading}
           >

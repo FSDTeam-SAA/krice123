@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { Bed, Bath, SquareIcon } from "lucide-react";
 
@@ -23,8 +24,8 @@ const FloorPlanCard = ({
   bathrooms,
   sqft,
   features,
-  order ,
-  order2 ,
+  order,
+  order2,
 }: FloorPlanCardProps) => {
   return (
     <div className="group rounded-3xl bg-white p-6 md:p-10 border border-[#e3ddd4] shadow-sm hover:shadow-xl hover:border-[#6a8f3e]/30 transition-all duration-300">
@@ -73,13 +74,18 @@ const FloorPlanCard = ({
           </div>
 
           <div className="pt-4">
-            <Button className="rounded-full bg-[#6a8f3e] px-8 py-6 text-lg text-white hover:bg-[#5b7c35] font-bold shadow-lg shadow-[#6a8f3e]/20 transition-all hover:scale-105 active:scale-95">
-              Get a Free Quote
+            <Button
+              asChild
+              className="rounded-full bg-[#6a8f3e] px-8 py-6 text-lg text-white hover:bg-[#5b7c35] font-bold shadow-lg shadow-[#6a8f3e]/20 transition-all hover:scale-105 active:scale-95"
+            >
+              <Link href="/form">Get a Free Quote</Link>
             </Button>
           </div>
         </div>
 
-        <div className={`relative flex justify-center ${order2 === 'md:order-1' ? 'md:justify-start' : 'md:justify-end'} ${order2}`}>
+        <div
+          className={`relative flex justify-center ${order2 === "md:order-1" ? "md:justify-start" : "md:justify-end"} ${order2}`}
+        >
           <div className="relative overflow-hidden rounded-2xl w-full max-w-[450px] aspect-[4/5] shadow-2xl">
             <Image
               src={image}

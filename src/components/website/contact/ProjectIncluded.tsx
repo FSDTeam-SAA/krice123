@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
 
@@ -54,8 +55,11 @@ const ProjectIncluded = () => {
 
             {/* CTA Button */}
             <div className="pt-2">
-              <Button className="rounded-md bg-[#6a8f3e] px-8 py-6 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#5b7c35]">
-                Get a Free Quote
+              <Button
+                asChild
+                className="rounded-md bg-[#6a8f3e] px-8 py-6 text-base font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#5b7c35]"
+              >
+                <Link href="/form">Get a Free Quote</Link>
               </Button>
             </div>
           </div>

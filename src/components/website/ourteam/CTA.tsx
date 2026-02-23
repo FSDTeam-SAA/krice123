@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const CTA = () => {
@@ -14,8 +15,11 @@ const CTA = () => {
             It only takes 5 minutes.
           </p>
           <div className="mt-8">
-            <Button className="rounded-md bg-[#6a8f3e] px-8 py-6 text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#5b7c35] md:text-lg">
-              Get a Free Quote
+            <Button
+              asChild
+              className="rounded-md bg-[#6a8f3e] px-8 py-6 text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#5b7c35] md:text-lg"
+            >
+              <Link href="/form">Get a Free Quote</Link>
             </Button>
           </div>
         </div>

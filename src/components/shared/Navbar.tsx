@@ -3,9 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, X, User, LogOut, UserCircle } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -18,12 +27,17 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
     }
     return pathname === href;
+  };
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -56,12 +70,54 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
-          <Link
-            href="login"
-            className="text-base font-medium text-secondary hover:text-[#2f3628] transition-colors cursor-pointer"
-          >
-            Log in
-          </Link>
+          {status === "loading" ? (
+            <div className="h-10 w-10 animate-pulse rounded-full bg-[#e8e2d9]" />
+          ) : session ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center justify-center h-10 w-10 rounded-full bg-[#6a8f3e] text-white hover:bg-[#5b7c35] transition-colors focus:outline-none focus:ring-2 focus:ring-[#6a8f3e] focus:ring-offset-2">
+                  <User className="h-5 w-5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {session.user?.firstName} {session.user?.lastName}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {session.user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/acount"
+                    className="flex items-center cursor-pointer"
+                  >
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    <span>Account</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center cursor-pointer text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link
+              href="/login"
+              className="text-base font-medium text-secondary hover:text-[#2f3628] transition-colors cursor-pointer"
+            >
+              Log in
+            </Link>
+          )}
           <Link href="/form">
             <Button className="rounded-full bg-[#6a8f3e] px-5 text-sm md:text-base text-white hover:bg-[#5b7c35] transition-colors">
               Get a Free Quote
@@ -101,12 +157,45 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="space-y-2 border-t border-[#e3ddd4] pt-3">
-              <Link
-                href="/login"
-                className="block w-full rounded-lg px-3 py-2 text-left text-secondary hover:bg-[#e8e2d9] transition-colors font-semibold"
-              >
-                Log in
-              </Link>
+              {status === "loading" ? (
+                <div className="h-10 w-full animate-pulse rounded-lg bg-[#e8e2d9]" />
+              ) : session ? (
+                <>
+                  <div className="px-3 py-2">
+                    <p className="text-sm font-semibold text-[#2a2a2a]">
+                      {session.user?.firstName} {session.user?.lastName}
+                    </p>
+                    <p className="text-xs text-[#6f6a64]">
+                      {session.user?.email}
+                    </p>
+                  </div>
+                  <Link
+                    href="/acount"
+                    className="flex items-center w-full rounded-lg px-3 py-2 text-left text-secondary hover:bg-[#e8e2d9] transition-colors font-semibold"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    Account
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleLogout();
+                    }}
+                    className="flex items-center w-full rounded-lg px-3 py-2 text-left text-red-600 hover:bg-red-50 transition-colors font-semibold"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className="block w-full rounded-lg px-3 py-2 text-left text-secondary hover:bg-[#e8e2d9] transition-colors font-semibold"
+                >
+                  Log in
+                </Link>
+              )}
               <Link href="/form">
                 <Button className="w-full rounded-full bg-[#6a8f3e] text-white hover:bg-[#5b7c35] transition-colors">
                   Get a Free Quote

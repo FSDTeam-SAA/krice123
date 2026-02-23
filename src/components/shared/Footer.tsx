@@ -20,8 +20,11 @@ const Footer = () => {
             <p className="text-lg text-[#7a746e] mt-10">
               Email: info@example.com
             </p>
-            <Button className="rounded-md bg-[#6a8f3e] px-5 text-base font-bold text-white hover:bg-[#5b7c35]">
-              Get a Free Quote
+            <Button
+              asChild
+              className="rounded-md bg-[#6a8f3e] px-5 text-base font-bold text-white hover:bg-[#5b7c35]"
+            >
+              <Link href="/form">Get a Free Quote</Link>
             </Button>
           </div>
 
@@ -78,7 +81,7 @@ const Footer = () => {
               Service Area
             </h4>
             <div className="mt-3 text-sm text-[#6f6a64] flex items-start gap-3">
-              <MapPin  className=" text-red-600" />
+              <MapPin className=" text-red-600" />
               <div>
                 <p className="font-semibold text-[#2a2a2a]">
                   Northeast Wyoming

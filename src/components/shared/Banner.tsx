@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ const Banner = () => {
         <div className="space-y-6">
           <span className="inline-flex items-center gap-2 rounded-full border border-[#d9d2c9] bg-[#E1E4DC] px-4 py-2 text-xs font-medium text-[#4c4c4c] ">
             {/* <span className="h-2 w-2 rounded-full bg-[#6a8f3e]" /> */}
-                <Flower className="text-white bg-secondary rounded-md"/>
+            <Flower className="text-white bg-secondary rounded-md" />
             Find your best constriction Company.
           </span>
 
@@ -59,8 +60,11 @@ const Banner = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <Button className="rounded-md text-base font-bold bg-[#628B3D] px-5 text-white hover:bg-[#5b7c35]">
-              Get a Free Quote
+            <Button
+              asChild
+              className="rounded-md text-base font-bold bg-[#628B3D] px-5 text-white hover:bg-[#5b7c35]"
+            >
+              <Link href="/form">Get a Free Quote</Link>
             </Button>
             <Button
               variant="secondary"

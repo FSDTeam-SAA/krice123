@@ -87,8 +87,11 @@ const FloorPlan = () => {
                   the experience and team in place to turn your vision into a
                   well-built, lasting home.
                 </p>
-                <Button className="rounded-md bg-[#6a8f3e] px-6 text-white hover:bg-[#5b7c35]">
-                  Get a Free Quote
+                <Button
+                  asChild
+                  className="rounded-md bg-[#6a8f3e] px-6 text-white hover:bg-[#5b7c35]"
+                >
+                  <Link href="/form">Get a Free Quote</Link>
                 </Button>
               </div>
               <div className="flex justify-center md:justify-end">

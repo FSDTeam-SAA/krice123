@@ -9,25 +9,25 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 gap-10">
-      
-      {/* Left Side Image */}
-      <div className="relative w-full  ">
-        <Link href="/">
-          <Image
-            src="/images/login.jpg"
-            alt="Authentication Background"
-            width={760}
-            height={1000}
-            priority
-            className="w-full  h-screen object-cover"
-          />
-        </Link>
+    <div className="min-h-screen md:h-screen md:overflow-hidden grid grid-cols-1 md:grid-cols-2 relative lg:gap-10">
+      {/* Background Image for Mobile and Left Side for Desktop */}
+      <div className="fixed inset-0 z-0 md:relative md:w-full md:h-screen md:overflow-hidden">
+        <Image
+          src="/images/login.jpg"
+          alt="Authentication Background"
+          fill
+          priority
+          className="object-cover"
+        />
+        {/* Mobile Overlay */}
+        <div className="absolute inset-0 bg-black/40 md:hidden z-10" />
       </div>
 
-      {/* Right Side Content */}
-      <div className="flex items-center justify-start p-6 bg-white">
-        {children}
+      {/* Content Side */}
+      <div className="relative z-20 flex items-center justify-center md:justify-start px-4 py-12 md:px-10 md:py-0 md:bg-white overflow-y-auto md:h-screen">
+        <div className="w-full max-w-md mx-auto md:mx-0">
+          {children}
+        </div>
       </div>
 
       <Toaster richColors position="top-right" />

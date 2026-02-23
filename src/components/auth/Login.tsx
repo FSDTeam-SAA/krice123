@@ -62,8 +62,8 @@ export default function Login() {
   };
 
   return (
-    <div className=" ">
-      <div className=" bg-white rounded-2xl shadow-lg px-8 py-10">
+    <div className="w-full">
+      <div className="bg-white/95 backdrop-blur-sm md:bg-white rounded-2xl shadow-xl md:shadow-lg px-6 py-8 md:px-8 md:py-10 border border-white/20 md:border-none">
         {/* Heading */}
         <div className="flex justify-center mb-6">
           <Image

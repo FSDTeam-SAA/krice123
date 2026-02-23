@@ -10,6 +10,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { registerUser } from "@/lib/api/auth";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -62,13 +63,21 @@ export default function Register() {
     }
 
     try {
-      // TODO: Implement actual registration API call
-      // const result = await signUp(formData);
+      const result = await registerUser({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      toast.success("Account created successfully!");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      if (result.success) {
+        toast.success(result.message || "Account created successfully!");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      } else {
+        toast.error(result.message);
+      }
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
     } finally {
@@ -77,8 +86,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-[#FFFFFF]">
-      <div className=" bg-white rounded-2xl shadow-lg px-8 py-10">
+    <div className="flex items-center justify-center p-4">
+      <div className="bg-white/95 backdrop-blur-sm md:bg-white rounded-2xl shadow-xl md:shadow-lg px-6 py-8 md:px-8 md:py-10 border border-white/20 md:border-none w-full max-w-lg">
         {/* Heading */}
         <div className="flex justify-center mb-6">
           <Image

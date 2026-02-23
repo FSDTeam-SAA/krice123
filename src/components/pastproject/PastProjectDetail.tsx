@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useProjectById } from "@/lib/hooks/useProject";
@@ -76,7 +77,10 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
 
               <div className="md:absolute md:top-1/2 md:right-1/2 left-1/2 flex justify-center md:justify-center   md:mb-0">
                 <div className="flex items-center gap-0">
-                  <ArrowRight size={40} className="text-[#6a8f3e] rotate-90 md:rotate-0" />
+                  <ArrowRight
+                    size={40}
+                    className="text-[#6a8f3e] rotate-90 md:rotate-0"
+                  />
                 </div>
               </div>
 
@@ -106,8 +110,11 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
               </div>
 
               <div className="pt-6 border-t border-[#e3ddd4]">
-                <Button className="bg-[#6a8f3e] text-white hover:bg-[#5b7c35] font-semibold px-6">
-                  Get a Free Quote
+                <Button
+                  asChild
+                  className="bg-[#6a8f3e] text-white hover:bg-[#5b7c35] font-semibold px-6"
+                >
+                  <Link href="/form">Get a Free Quote</Link>
                 </Button>
               </div>
             </div>

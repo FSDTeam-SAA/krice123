@@ -48,9 +48,16 @@ declare module "next-auth/jwt" {
 }
 
 const handler = NextAuth({
+  // ✅ Custom pages (fixes redirect to /api/auth/error)
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
+
   providers: [
     CredentialsProvider({
       name: "Credentials",
+
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -58,13 +65,15 @@ const handler = NextAuth({
 
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password required");
+          return null;
         }
 
         try {
           const res = await fetch(`${baseUrl}/auth/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
@@ -73,15 +82,16 @@ const handler = NextAuth({
 
           const result = await res.json();
 
+          // ❗ IMPORTANT: Return null instead of throwing error
           if (!res.ok || !result.success) {
-            console.error("Login failed:", {
-              status: res.status,
-              result,
-            });
-            throw new Error(result.message || "Login failed");
+            return null;
           }
 
           const { user, accessToken, refreshToken } = result.data;
+
+          if (!user || !accessToken) {
+            return null;
+          }
 
           return {
             id: user.id || user._id,
@@ -93,10 +103,9 @@ const handler = NextAuth({
             accessToken,
             refreshToken,
           };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          console.error("Authorize Error:", error.message);
-          throw new Error(error.message || "Login failed"); 
+        } catch (error) {
+          console.error("Authorize Error:", error);
+          return null;
         }
       },
     }),
@@ -108,7 +117,7 @@ const handler = NextAuth({
 
   callbacks: {
     async jwt({ token, user }) {
-      // Populate token on first login
+      // First login
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -119,6 +128,7 @@ const handler = NextAuth({
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
+
       return token;
     },
 
@@ -131,8 +141,10 @@ const handler = NextAuth({
         lastName: token.lastName,
         image: token.image,
       };
+
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;
+
       return session;
     },
   },

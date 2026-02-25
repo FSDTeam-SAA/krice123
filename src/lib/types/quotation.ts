@@ -1,5 +1,4 @@
 export interface QuotationFormData {
-  // Personal Information
   firstName: string;
   lastName: string;
   email: string;
@@ -11,36 +10,31 @@ export interface QuotationFormData {
   city: string;
   stateOrProvince: string;
   postalOrZipCode: string;
-  siteAddressIfDifferent: string;
-
-  // Project Information
   isLegalOwner: boolean;
+  siteAddressIfDifferent: boolean;
   isSiteReadyToWorkOn: boolean;
-  workType: string[];
+  workType: string;
   hasBuiltOrRenovatedBefore: boolean;
   hasSelectedArchitectOrDesigner: boolean;
   hasAllPropertyInfo: boolean;
   hasPermitsApproved: boolean;
   budget: string;
-  hasFinancing: boolean;
-  haveSelected: string[];
-  expectationsExperienceHelp: string[];
+  hasFinancing: boolean; // Based on "Yes" value
+  haveSelected: boolean;   // Based on "Yes" value
+  expectationsExperienceHelp: string;
   desiredStartTime: string;
   preBuildRequirements: string;
   specialRequirements: string;
   hearAboutUs: string;
-  buildingConcerns: string;
-  planFile?: File | null;
-
-  // Priorities (1-5 ranking)
-  priorities: {
-    communication: number;
-    reliability: number;
-    experience: number;
-    quality: number;
-    cost: number;
-    maintenance: number;
-  };
+  expectationsBuilder: string;
+  builderExpectations: string;
+  "priorities[communication]": number;
+  "priorities[reliability]": number;
+  "priorities[experience]": number;
+  "priorities[quality]": number;
+  "priorities[cost]": number;
+  wantsFreeMaintenance: number; 
+  planFiles: File | null; 
 }
 
 export interface QuotationResponse {

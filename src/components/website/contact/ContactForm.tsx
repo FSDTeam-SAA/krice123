@@ -76,16 +76,16 @@ const ContactForm = () => {
                 Get in touch with us
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-[#7a746e] md:text-base">
-                Lorem ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry&apos;s standard
-                dummy.
+                Have questions about a new build, remodel, or project planning?
+                Send us a message and the Klondike Construction team will get
+                back to you as soon as possible.
               </p>
             </div>
 
             {/* Contact Details */}
-            <div className="space-y-6">
+            <div className="space-y-6 grid grid-cols-1 md:grid-cols-2">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#e8f5e9] text-[#6a8f3e]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#CEDBC3] text-[#6a8f3e]">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
@@ -97,7 +97,7 @@ const ContactForm = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#e8f5e9] text-[#6a8f3e]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#CEDBC3] text-[#6a8f3e]">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
@@ -111,7 +111,7 @@ const ContactForm = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#e8f5e9] text-[#6a8f3e]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#CEDBC3] text-[#6a8f3e]">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ const ContactForm = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#e8f5e9] text-[#6a8f3e]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#CEDBC3] text-[#6a8f3e]">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>

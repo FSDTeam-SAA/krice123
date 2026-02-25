@@ -23,32 +23,31 @@ const Form = () => {
     city: "",
     stateOrProvince: "",
     postalOrZipCode: "",
-    siteAddressIfDifferent: "",
+    siteAddressIfDifferent: false,
     isLegalOwner: false,
     isSiteReadyToWorkOn: false,
-    workType: [],
+    workType: "",
     hasBuiltOrRenovatedBefore: false,
     hasSelectedArchitectOrDesigner: false,
     hasAllPropertyInfo: false,
     hasPermitsApproved: false,
     budget: "",
     hasFinancing: false,
-    haveSelected: [],
-    expectationsExperienceHelp: [],
+    haveSelected: false,
+    expectationsExperienceHelp: "",
     desiredStartTime: "",
     preBuildRequirements: "",
     specialRequirements: "",
     hearAboutUs: "",
-    buildingConcerns: "",
-    planFile: null,
-    priorities: {
-      communication: 1,
-      reliability: 1,
-      experience: 1,
-      quality: 1,
-      cost: 1,
-      maintenance: 1,
-    },
+    expectationsBuilder: "",
+    builderExpectations: "",
+    "priorities[communication]": 1,
+    "priorities[reliability]": 1,
+    "priorities[experience]": 1,
+    "priorities[quality]": 1,
+    "priorities[cost]": 1,
+    wantsFreeMaintenance: 1,
+    planFiles: null,
   });
 
   const handleInputChange = (
@@ -65,35 +64,20 @@ const Form = () => {
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handleArrayCheckboxChange = (
-    name: keyof QuotationFormData,
-    value: string,
-    checked: boolean,
-  ) => {
-    setFormData((prev) => {
-      const currentArray = prev[name] as string[];
-      return {
-        ...prev,
-        [name]: checked
-          ? [...currentArray, value]
-          : currentArray.filter((item) => item !== value),
-      };
-    });
-  };
 
   const handlePriorityChange = (
-    key: keyof QuotationFormData["priorities"],
+    key: keyof QuotationFormData,
     value: number,
   ) => {
     setFormData((prev) => ({
       ...prev,
-      priorities: { ...prev.priorities, [key]: value },
+      [key]: value,
     }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData((prev) => ({ ...prev, planFile: e.target.files![0] }));
+      setFormData((prev) => ({ ...prev, planFiles: e.target.files![0] }));
     }
   };
 
@@ -308,19 +292,44 @@ const Form = () => {
             {/* Site Address */}
             <div>
               <Label
-                htmlFor="siteAddressIfDifferent"
-                className="text-sm font-semibold"
+                className="text-sm font-semibold mb-2 block"
               >
-                Site Address (if different)
+                Is the site address different from your home address?
               </Label>
-              <Input
-                id="siteAddressIfDifferent"
-                name="siteAddressIfDifferent"
-                placeholder="Enter your site address..."
-                value={formData.siteAddressIfDifferent}
-                onChange={handleInputChange}
-                className="mt-1 w-full"
-              />
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    id="siteAddressDifferentYes"
+                    name="siteAddressIfDifferent"
+                    checked={formData.siteAddressIfDifferent === true}
+                    onChange={() => handleCheckboxChange("siteAddressIfDifferent", true)}
+                    className="w-4 h-4"
+                  />
+                  <Label
+                    htmlFor="siteAddressDifferentYes"
+                    className="text-sm cursor-pointer"
+                  >
+                    Yes
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    id="siteAddressDifferentNo"
+                    name="siteAddressIfDifferent"
+                    checked={formData.siteAddressIfDifferent === false}
+                    onChange={() => handleCheckboxChange("siteAddressIfDifferent", false)}
+                    className="w-4 h-4"
+                  />
+                  <Label
+                    htmlFor="siteAddressDifferentNo"
+                    className="text-sm cursor-pointer"
+                  >
+                    No
+                  </Label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -429,19 +438,15 @@ const Form = () => {
                   "New Home",
                   "Extension / Addition",
                   "Renovation",
-                  "Other",
                 ].map((type) => (
                   <div key={type} className="flex items-center space-x-2">
-                    <Checkbox
+                    <input
+                      type="radio"
                       id={`workType-${type}`}
-                      checked={formData.workType.includes(type)}
-                      onCheckedChange={(checked) =>
-                        handleArrayCheckboxChange(
-                          "workType",
-                          type,
-                          checked as boolean,
-                        )
-                      }
+                      name="workType"
+                      checked={formData.workType === type}
+                      onChange={() => setFormData(prev => ({ ...prev, workType: type }))}
+                      className="w-4 h-4"
                     />
                     <Label
                       htmlFor={`workType-${type}`}
@@ -451,11 +456,29 @@ const Form = () => {
                     </Label>
                   </div>
                 ))}
-                {formData.workType.includes("Other") && (
+                <div className="flex items-center space-x-2">
+                  <input
+                      type="radio"
+                      id="workType-Other"
+                      name="workType"
+                      checked={!["New Home", "Extension / Addition", "Renovation"].includes(formData.workType) && formData.workType !== ""}
+                      onChange={() => setFormData(prev => ({ ...prev, workType: " " }))}
+                      className="w-4 h-4"
+                    />
+                    <Label
+                      htmlFor="workType-Other"
+                      className="text-sm cursor-pointer"
+                    >
+                      Other
+                    </Label>
+                </div>
+                {(!["New Home", "Extension / Addition", "Renovation"].includes(formData.workType) && formData.workType !== "") && (
                   <Input
                     placeholder="Write Here"
                     className="mt-2"
                     name="workTypeOther"
+                    value={formData.workType === " " ? "" : formData.workType}
+                    onChange={(e) => setFormData(prev => ({ ...prev, workType: e.target.value }))}
                   />
                 )}
               </div>
@@ -639,20 +662,6 @@ const Form = () => {
                     No
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    id="permitsNotRequired"
-                    name="hasPermitsApproved"
-                    className="w-4 h-4"
-                  />
-                  <Label
-                    htmlFor="permitsNotRequired"
-                    className="text-sm cursor-pointer"
-                  >
-                    Not sure if required
-                  </Label>
-                </div>
               </div>
             </div>
 
@@ -678,7 +687,7 @@ const Form = () => {
             {/* Financing */}
             <div>
               <Label className="text-sm font-semibold mb-2 block">
-                Do you have financing if you please answer follow-up questions{" "}
+                Do you have financing?{" "}
                 <span className="text-red-500">*</span>
               </Label>
               <div className="flex items-center space-x-6">
@@ -695,41 +704,23 @@ const Form = () => {
                     htmlFor="financingYes"
                     className="text-sm cursor-pointer"
                   >
-                    Yes-I have financing setup for this project
+                    Yes
                   </Label>
                 </div>
-              </div>
-              <div className="flex items-center space-x-6 mt-2">
                 <div className="flex items-center space-x-2">
                   <input
                     type="radio"
-                    id="financingWorking"
-                    name="hasFinancing"
-                    className="w-4 h-4"
-                  />
-                  <Label
-                    htmlFor="financingWorking"
-                    className="text-sm cursor-pointer"
-                  >
-                    No-I am working on financing
-                  </Label>
-                </div>
-              </div>
-              <div className="flex items-center space-x-6 mt-2">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    id="financingNoPlan"
+                    id="financingNo"
                     name="hasFinancing"
                     checked={formData.hasFinancing === false}
                     onChange={() => handleCheckboxChange("hasFinancing", false)}
                     className="w-4 h-4"
                   />
                   <Label
-                    htmlFor="financingNoPlan"
+                    htmlFor="financingNo"
                     className="text-sm cursor-pointer"
                   >
-                    No-I am paying cash
+                    No
                   </Label>
                 </div>
               </div>
@@ -738,30 +729,41 @@ const Form = () => {
             {/* Selected Items */}
             <div>
               <Label className="text-sm font-semibold mb-2 block">
-                Have you selected <span className="text-red-500">*</span>
+                Have you selected Colors, Products & Fittings? <span className="text-red-500">*</span>
               </Label>
-              <div className="space-y-2">
-                {["Colors", "Products & Fittings", "Other"].map((item) => (
-                  <div key={item} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`selected-${item}`}
-                      checked={formData.haveSelected.includes(item)}
-                      onCheckedChange={(checked) =>
-                        handleArrayCheckboxChange(
-                          "haveSelected",
-                          item,
-                          checked as boolean,
-                        )
-                      }
-                    />
-                    <Label
-                      htmlFor={`selected-${item}`}
-                      className="text-sm cursor-pointer"
-                    >
-                      {item}
-                    </Label>
-                  </div>
-                ))}
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    id="selectedYes"
+                    name="haveSelected"
+                    checked={formData.haveSelected === true}
+                    onChange={() => handleCheckboxChange("haveSelected", true)}
+                    className="w-4 h-4"
+                  />
+                  <Label
+                    htmlFor="selectedYes"
+                    className="text-sm cursor-pointer"
+                  >
+                    Yes
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    id="selectedNo"
+                    name="haveSelected"
+                    checked={formData.haveSelected === false}
+                    onChange={() => handleCheckboxChange("haveSelected", false)}
+                    className="w-4 h-4"
+                  />
+                  <Label
+                    htmlFor="selectedNo"
+                    className="text-sm cursor-pointer"
+                  >
+                    No
+                  </Label>
+                </div>
               </div>
             </div>
 
@@ -777,22 +779,15 @@ const Form = () => {
                   "Products & Fittings",
                   "Kitchen Design",
                   "Landscaping",
-                  "Products and fittings",
-                  "Others",
                 ].map((item) => (
                   <div key={item} className="flex items-center space-x-2">
-                    <Checkbox
+                    <input
+                      type="radio"
                       id={`experience-${item}`}
-                      checked={formData.expectationsExperienceHelp.includes(
-                        item,
-                      )}
-                      onCheckedChange={(checked) =>
-                        handleArrayCheckboxChange(
-                          "expectationsExperienceHelp",
-                          item,
-                          checked as boolean,
-                        )
-                      }
+                      name="expectationsExperienceHelp"
+                      checked={formData.expectationsExperienceHelp === item}
+                      onChange={() => setFormData(prev => ({ ...prev, expectationsExperienceHelp: item }))}
+                      className="w-4 h-4"
                     />
                     <Label
                       htmlFor={`experience-${item}`}
@@ -802,8 +797,29 @@ const Form = () => {
                     </Label>
                   </div>
                 ))}
-                {formData.expectationsExperienceHelp.includes("Others") && (
-                  <Input placeholder="Write Here" className="mt-2" />
+                <div className="flex items-center space-x-2">
+                   <input
+                      type="radio"
+                      id="experience-Others"
+                      name="expectationsExperienceHelp"
+                      checked={!["Electrical layout", "Products & Fittings", "Kitchen Design", "Landscaping"].includes(formData.expectationsExperienceHelp) && formData.expectationsExperienceHelp !== ""}
+                      onChange={() => setFormData(prev => ({ ...prev, expectationsExperienceHelp: " " }))}
+                      className="w-4 h-4"
+                    />
+                    <Label
+                      htmlFor="experience-Others"
+                      className="text-sm cursor-pointer"
+                    >
+                      Others
+                    </Label>
+                </div>
+                {(!["Electrical layout", "Products & Fittings", "Kitchen Design", "Landscaping"].includes(formData.expectationsExperienceHelp) && formData.expectationsExperienceHelp !== "") && (
+                  <Input 
+                    placeholder="Write Here" 
+                    className="mt-2"
+                    value={formData.expectationsExperienceHelp === " " ? "" : formData.expectationsExperienceHelp}
+                    onChange={(e) => setFormData(prev => ({ ...prev, expectationsExperienceHelp: e.target.value }))}
+                  />
                 )}
               </div>
             </div>
@@ -905,30 +921,48 @@ const Form = () => {
               />
             </div>
 
-            {/* Building Concerns */}
-            <div>
-              <Label
-                htmlFor="buildingConcerns"
-                className="text-sm font-semibold mb-2 block"
-              >
-                What are the building concerns of your builder?{" "}
-                <span className="text-red-500">*</span>
-              </Label>
-              <Textarea
-                id="buildingConcerns"
-                name="buildingConcerns"
-                placeholder="Write Here"
-                value={formData.buildingConcerns}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full"
-              />
+            {/* Builder Expectations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label
+                  htmlFor="expectationsBuilder"
+                  className="text-sm font-semibold mb-2 block"
+                >
+                  Expectations of Builder <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  id="expectationsBuilder"
+                  name="expectationsBuilder"
+                  placeholder="Write Here"
+                  value={formData.expectationsBuilder}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <Label
+                  htmlFor="builderExpectations"
+                  className="text-sm font-semibold mb-2 block"
+                >
+                  Builder Expectations <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  id="builderExpectations"
+                  name="builderExpectations"
+                  placeholder="Write Here"
+                  value={formData.builderExpectations}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Upload Plans */}
             <div>
               <Label
-                htmlFor="planFile"
+                htmlFor="planFiles"
                 className="text-sm font-semibold mb-2 block"
               >
                 Upload any plans or files here
@@ -936,12 +970,12 @@ const Form = () => {
               <div className="border-2 border-dashed border-neutral-300 rounded-lg p-4 text-center">
                 <input
                   type="file"
-                  id="planFile"
+                  id="planFiles"
                   onChange={handleFileChange}
                   className="hidden"
                   accept=".pdf,.dwg,.png,.jpg,.jpeg"
                 />
-                <Label htmlFor="planFile" className="cursor-pointer">
+                <Label htmlFor="planFiles" className="cursor-pointer">
                   <div className="flex items-center justify-center space-x-2">
                     <svg
                       className="w-6 h-6 text-neutral-400"
@@ -960,9 +994,9 @@ const Form = () => {
                       Choose file to Drag & Drop
                     </span>
                   </div>
-                  {formData.planFile && (
+                  {formData.planFiles && (
                     <p className="text-sm text-green-600 mt-2">
-                      Selected: {formData.planFile.name}
+                      Selected: {formData.planFiles.name}
                     </p>
                   )}
                 </Label>
@@ -981,13 +1015,13 @@ const Form = () => {
           <div className="space-y-4">
             {(
               [
-                { key: "communication", label: "Communication" },
-                { key: "reliability", label: "Reliability" },
-                { key: "experience", label: "Experience" },
-                { key: "quality", label: "Quality" },
-                { key: "cost", label: "Cost" },
+                { key: "priorities[communication]", label: "Communication" },
+                { key: "priorities[reliability]", label: "Reliability" },
+                { key: "priorities[experience]", label: "Experience" },
+                { key: "priorities[quality]", label: "Quality" },
+                { key: "priorities[cost]", label: "Cost" },
                 {
-                  key: "maintenance",
+                  key: "wantsFreeMaintenance",
                   label: "60 Day FREE maintenance after completion",
                 },
               ] as const
@@ -1003,8 +1037,8 @@ const Form = () => {
                         type="radio"
                         id={`${key}-${value}`}
                         name={key}
-                        checked={formData.priorities[key] === value}
-                        onChange={() => handlePriorityChange(key, value)}
+                        checked={formData[key] === value}
+                        onChange={() => handlePriorityChange(key as keyof QuotationFormData, value)}
                         className="w-4 h-4"
                       />
                       <Label

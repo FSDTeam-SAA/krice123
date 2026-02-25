@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import SafeHTML from "./SafeHTML";
+// Update this path to the correct location of SafeHTML
 
 type PastProjectCardProps = {
   image: string;
   title: string;
   description: string;
   projectId?: string;
+  htmlContent?: string;
 };
 
 const PastProjectCard = ({
@@ -14,6 +17,7 @@ const PastProjectCard = ({
   title,
   description,
   projectId,
+  htmlContent,
 }: PastProjectCardProps) => {
   const href = projectId ? `/pastprojects/${projectId}` : "#";
 
@@ -28,6 +32,9 @@ const PastProjectCard = ({
             {title}
           </h3>
           <p className="text-base leading-[150%] sm:text-lg">{description}</p>
+          <div className="mt-2">
+            <SafeHTML htmlContent={htmlContent} className="prose-sm" />
+          </div>
         </div>
       </article>
     </Link>

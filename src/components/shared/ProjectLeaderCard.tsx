@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import SafeHTML from "./SafeHTML";
 
 type ProjectLeaderCardProps = {
   image: string;
@@ -24,9 +25,12 @@ const ProjectLeaderCard = ({
         {name}
       </h3>
       <h5 className="text-sm md:text-base leading-[120%] font-semibold text-[#2F3628]">{role}</h5>
-      <h5 className="mt-4 text-sm  text-[#2F3628] leading-[150%]">
-        {description}
-      </h5>
+      <div className="mt-4">
+        <SafeHTML 
+          htmlContent={description} 
+          className="prose-sm text-[#2F3628] leading-[150%]" 
+        />
+      </div>
     </article>
   );
 };

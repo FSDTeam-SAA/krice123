@@ -93,6 +93,7 @@ const handler = NextAuth({
             accessToken,
             refreshToken,
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
           console.error("Authorize Error:", error.message);
           throw new Error(error.message || "Login failed"); 

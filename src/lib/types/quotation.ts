@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface QuotationFormData {
   firstName: string;
   lastName: string;
@@ -40,5 +42,6 @@ export interface QuotationFormData {
 export interface QuotationResponse {
   success: boolean;
   message: string;
+ 
   data?: any;
 }

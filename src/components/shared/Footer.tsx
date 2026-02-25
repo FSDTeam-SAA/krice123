@@ -43,7 +43,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#past-projects"
+                  href="/pastprojects"
                   className="hover:text-[#6a8f3e] transition-colors"
                 >
                   Past projects
@@ -51,7 +51,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#floor-plans"
+                  href="/floorplans"
                   className="hover:text-[#6a8f3e] transition-colors"
                 >
                   Floor plans/services
@@ -59,7 +59,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/team"
                   className="hover:text-[#6a8f3e] transition-colors"
                 >
                   Our Team
@@ -67,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="#contact"
+                  href="/contact"
                   className="hover:text-[#6a8f3e] transition-colors"
                 >
                   Contact Us

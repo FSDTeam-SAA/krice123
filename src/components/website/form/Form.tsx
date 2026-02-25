@@ -139,7 +139,7 @@ const Form = () => {
                 <Input
                   id="lastName"
                   name="lastName"
-                  placeholder="First Name"
+                  placeholder="Last Name"
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
@@ -207,7 +207,7 @@ const Form = () => {
                 <Input
                   id="spouseLastName"
                   name="spouseLastName"
-                  placeholder="First Name"
+                  placeholder="Last Name"
                   value={formData.spouseLastName}
                   onChange={handleInputChange}
                   className="mt-1"

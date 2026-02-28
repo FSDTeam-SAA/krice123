@@ -99,7 +99,7 @@ const AllFloorPlans = () => {
               bathrooms={0}
               sqft={0}
               features={[]}
-              order={index % 2 === 0 ? "normal" : "reverse"}
+              order={index % 2 === 0 ? "md:order-2" : "md:order-1"}
               order2={index % 2 === 0 ? "md:order-1" : "md:order-2"}
             />
           ))}

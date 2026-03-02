@@ -31,7 +31,10 @@ const PastProjectCard = ({
           <h3 className="text-xl font-semibold text-primary-foreground md:text-2xl">
             {title}
           </h3>
-          <p className="text-base leading-[150%] sm:text-lg">{description}</p>
+          <p
+            className="text-base leading-[150%] sm:text-lg"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
           <div className="mt-2">
             <SafeHTML htmlContent={htmlContent} className="prose-sm" />
           </div>

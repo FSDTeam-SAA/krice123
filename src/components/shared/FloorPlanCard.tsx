@@ -51,9 +51,10 @@ const FloorPlanCard = ({
             </div>
           </div>
 
-          <p className="text-base leading-relaxed text-[#7a746e] max-w-xl">
-            {description}
-          </p>
+          <p
+            className="text-base leading-relaxed text-[#7a746e] max-w-xl"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
 
           <div className="pt-2">
             <p className="text-sm font-bold text-[#2a2a2a] uppercase tracking-wider mb-4 flex items-center gap-2">

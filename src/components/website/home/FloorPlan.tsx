@@ -53,9 +53,10 @@ const FloorPlan = () => {
                 <h3 className="text-2xl font-bold text-[#2a2a2a]">
                   {firstService.title}
                 </h3>
-                <p className="text-sm leading-6 p-5 w-full text-[#7a746e]">
-                  {firstService.description}
-                </p>
+                <p
+                  className="text-sm leading-6 p-5 w-full text-[#7a746e]"
+                  dangerouslySetInnerHTML={{ __html: firstService.description }}
+                />
                 <Button className="rounded-md bg-[#6a8f3e] px-6 text-white hover:bg-[#5b7c35]">
                   Get a Free Quote
                 </Button>

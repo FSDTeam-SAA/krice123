@@ -87,7 +87,7 @@ const Form = () => {
   };
 
   return (
-    <div className="mx-auto px-4 py-12 bg-neutral-50">
+    <div className="container mx-auto px-4 py-12 bg-neutral-50">
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 1: Personal Information */}
         <div>

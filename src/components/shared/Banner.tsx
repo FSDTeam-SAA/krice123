@@ -70,7 +70,10 @@ const Banner = () => {
               variant="secondary"
               className="rounded-md border text-base font-bold border-[#1d1d1d] bg-black px-6  text-white hover:bg-[#1d1d1d] hover:text-white"
             >
+              <Link href="/contact">  
+
               Contact Us
+              </Link>
             </Button>
           </div>
         </div>

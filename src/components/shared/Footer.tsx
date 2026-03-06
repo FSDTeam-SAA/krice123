@@ -92,7 +92,7 @@ const Footer = () => {
               <MapPin className=" text-red-600" />
               <div>
                 <p className="font-semibold text-[#2a2a2a]">
-                  50 Maverick Trail
+                  Northeast Wyoming, Buffalo, Sheridan and Gillette
                 </p>
                 {/* <p>Buffalo, Sheridan and Gillette Wyoming</p> */}
               </div>
@@ -100,7 +100,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-[#dcd5cc] pt-4 text-center text-xs text-[#8c877f]">
+        <div className="border-t border-[#dcd5cc] pt-4 text-center text-base text-[#595E53]">
           © 2026 KLONDIKE. All Rights Reserved
         </div>
       </div>

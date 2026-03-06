@@ -11,7 +11,7 @@ const ProjectIncluded = () => {
         <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left Side - Images */}
           <div className="relative">
-            <div className="relative grid grid-cols-2 gap-4">
+            <div className="relative grid grid-cols-1 gap-4">
               {/* Larger image on left */}
               <div
                 className="relative aspect-square overflow-hidden rounded-2xl shadow-xl w-full max-w-150 md:max-w-175 lg:max-w-200"
@@ -49,7 +49,7 @@ const ProjectIncluded = () => {
                 <Shield className="h-4 w-4 text-[#6a8f3e]" />
               </div>
               <span className="text-sm font-semibold text-[#2a2a2a]">
-                Minnesota + Major US Metro Cities
+                Northeast Wyoming, Buffalo, Sheridan and Gillette
               </span>
             </div>
 

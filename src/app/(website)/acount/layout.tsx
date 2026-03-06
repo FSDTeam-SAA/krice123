@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
+import { User, Lock, LogOut } from "lucide-react";
 
 const sidebarLinks = [
-  { label: "Personal Information", href: "/acount" },
-  { label: "Change Password", href: "/acount/change-password" },
+  { label: "Personal Information", href: "/acount", icon: User },
+  { label: "Change Password", href: "/acount/change-password", icon: Lock },
 ];
 
 export default function AccountLayout({
@@ -16,6 +18,7 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const isActive = (href: string) => {
     if (href === "/acount") {
@@ -24,59 +27,85 @@ export default function AccountLayout({
     return pathname === href;
   };
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
+
   return (
-    <div className="flex h-screen">
-      {/* Left side - Image */}
-      <div className="hidden w-1/2 overflow-hidden lg:block">
-        <Image
-          src="/images/contact.jpg"
-          alt="Account background"
-          width={720}
-          height={1080}
-          className="h-full w-full object-cover"
-        />
-      </div>
+    <div className="   bg-[#e8e3db]">
+      <div className="container mx-auto flex min-h-screen gap-8 py-10">
 
-      {/* Right side - Content */}
-      <div className="flex w-full flex-col lg:w-1/2">
-        {/* Sidebar - Top section */}
-        <div className="border-b border-[#e6e1d8] bg-white px-6 py-4 md:px-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold text-[#2a2a2a]">Account</h1>
+      {/* Left Sidebar */}
+      <aside className="w-64  bg-[#e8e3db] p-6 flex flex-col items-center">
+        {/* Profile Section */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative mb-4">
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-300">
+              {session?.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  alt="Profile"
+                  width={96}
+                  height={96}
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-[#6a8f3e] text-white text-2xl font-semibold">
+                  {session?.user?.firstName?.[0]}
+                  {session?.user?.lastName?.[0]}
+                </div>
+              )}
             </div>
-            <button className="text-sm font-semibold text-[#c74b4b] transition-colors hover:text-[#a63b3b]">
-              Log out
-            </button>
+            <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-white flex items-center justify-center text-xs font-semibold text-[#2a2a2a]">
+              @
+            </div>
           </div>
+          {session?.user && (
+            <>
+              <h3 className="text-base font-semibold text-[#2a2a2a] text-center">
+                {session.user.firstName} {session.user.lastName}
+              </h3>
+              <p className="text-sm text-[#7a746e] text-center">
+                {session.user.email}
+              </p>
+            </>
+          )}
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="border-b border-[#e6e1d8] bg-white px-6 md:px-8">
-          <nav className="flex gap-8">
-            {sidebarLinks.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`border-b-2 px-1 py-3 text-sm font-semibold transition-colors ${
-                    active
-                      ? "border-[#6a8f3e] text-[#2a2a2a]"
-                      : "border-transparent text-[#7a746e] hover:text-[#2a2a2a]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+        {/* Navigation Links */}
+        <nav className="w-full space-y-2">
+          {sidebarLinks.map((link) => {
+            const active = isActive(link.href);
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  active
+                    ? "bg-[#3d4339] text-white"
+                    : "text-[#2a2a2a] hover:bg-[#d4cfc5]"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {link.label}
+              </Link>
+            );
+          })}
 
-        {/* Main Content */}
-        <div className="flex-1 overflow-y-auto bg-[#f7f4ef] px-6 py-8 md:px-8">
-          {children}
-        </div>
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-[#c74b4b] hover:bg-[#d4cfc5] transition-colors w-full"
+          >
+            <LogOut className="h-4 w-4" />
+            Log out
+          </button>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

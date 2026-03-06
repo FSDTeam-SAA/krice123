@@ -110,7 +110,7 @@ export default function ChangePasswordPage() {
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-lg p-8 shadow-sm max-w-4xl">
+      <div className="bg-white rounded-lg p-8 shadow-sm ">
         <h2 className="text-xl font-semibold text-[#2a2a2a] mb-6">
           Change password
         </h2>

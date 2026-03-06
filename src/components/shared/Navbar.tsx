@@ -44,13 +44,19 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full bg-[#f7f4ef] shadow-sm">
       <div className="container mx-auto flex items-center justify-between gap-6 px-4 py-4 md:py-5">
         <div className="flex items-center gap-3">
-          <Image
-            src="/images/logo.svg"
-            alt="Klondike Construction"
-            width={225}
-            height={60}
-            className="h-auto w-auto object-cover"
-          />
+          <Link
+            href="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="cursor-pointer hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src="/images/logo.svg"
+              alt="Klondike Construction"
+              width={225}
+              height={60}
+              className="h-auto w-auto object-cover"
+            />
+          </Link>
         </div>
 
         <nav className="hidden items-center gap-8 text-lg text-[#595e53] lg:flex">

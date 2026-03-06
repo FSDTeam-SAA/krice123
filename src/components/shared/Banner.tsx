@@ -14,7 +14,7 @@ const Banner = () => {
           <span className="inline-flex items-center gap-2 rounded-full border border-[#d9d2c9] bg-[#E1E4DC] px-4 py-2 text-xs font-medium text-[#4c4c4c] ">
             {/* <span className="h-2 w-2 rounded-full bg-[#6a8f3e]" /> */}
             <Flower className="text-white bg-secondary rounded-md" />
-            Find your best constriction Company.
+            Find your best Construction Company.
           </span>
 
           <div className="space-y-4">

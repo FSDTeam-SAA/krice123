@@ -130,7 +130,12 @@ const Form = () => {
                   className="mt-1"
                 />
               </div>
-              <div>
+             
+            </div>
+
+            {/* Email Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <div>
                 <Label htmlFor="phoneNumber" className="text-sm font-semibold">
                   Phone Number
                 </Label>
@@ -143,10 +148,6 @@ const Form = () => {
                   className="mt-1"
                 />
               </div>
-            </div>
-
-            {/* Email Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="email" className="text-sm font-semibold">
                   Email

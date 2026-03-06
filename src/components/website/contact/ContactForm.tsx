@@ -92,7 +92,12 @@ const ContactForm = () => {
                   <h3 className="font-semibold text-[#2a2a2a]">
                     Email Address
                   </h3>
-                  <p className="text-sm text-[#7a746e]">support@example.com</p>
+                  <a
+                    href="mailto:info@klondikeconstruction"
+                    className="text-sm text-[#6a8f3e] hover:underline"
+                  >
+                    info@klondikeconstruction
+                  </a>
                 </div>
               </div>
 
@@ -103,9 +108,9 @@ const ContactForm = () => {
                 <div>
                   <h3 className="font-semibold text-[#2a2a2a]">Location</h3>
                   <p className="text-sm text-[#7a746e]">
-                    Northeast Wyoming
+                    50 Maverick Trail
                     <br />
-                    50 Magazine Trail Buffalo, WY 82834
+                    {/* 50 Magazine Trail Buffalo, WY 82834 */}
                   </p>
                 </div>
               </div>
@@ -116,7 +121,7 @@ const ContactForm = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-[#2a2a2a]">Phone Number</h3>
-                  <p className="text-sm text-[#7a746e]">(307)217-9060</p>
+                  <p className="text-sm text-[#7a746e]">(307)217-3680</p>
                 </div>
               </div>
 
@@ -128,9 +133,7 @@ const ContactForm = () => {
                   <h3 className="font-semibold text-[#2a2a2a]">
                     Business Hour
                   </h3>
-                  <p className="text-sm text-[#7a746e]">
-                    Available 24/7 Email Support
-                  </p>
+                  <p className="text-sm text-[#7a746e]">Monday-Friday 7:30-4</p>
                 </div>
               </div>
             </div>

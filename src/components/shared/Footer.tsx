@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -11,14 +13,20 @@ const Footer = () => {
       <div className="container mx-auto space-y-8 px-4">
         <div className="grid gap-8 border-t border-[#dcd5cc] pt-8 md:grid-cols-[1.1fr_1fr_1fr]">
           <div className="space-y-4">
-            <Image
-              src="/images/logo.svg"
-              alt="Klondike Construction"
-              width={270}
-              height={72}
-            />
+            <Link
+              href="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="cursor-pointer hover:opacity-80 transition-opacity inline-block"
+            >
+              <Image
+                src="/images/logo.svg"
+                alt="Klondike Construction"
+                width={270}
+                height={72}
+              />
+            </Link>
             <p className="text-lg text-[#7a746e] mt-10">
-              Email: info@example.com
+              Email: info@klondikeconstruction
             </p>
             <Button
               asChild
@@ -29,10 +37,10 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-[#2a2a2a]">
+            <h4 className="text-xl font-semibold text-[#2a2a2a]">
               Useful Links
             </h4>
-            <ul className="mt-3 space-y-2 text-sm font-medium text-[#6f6a64]">
+            <ul className="mt-3 space-y-2  font-medium text-[#6f6a64]">
               <li>
                 <Link
                   href="/"
@@ -77,16 +85,16 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-[#2a2a2a]">
+            <h4 className="text-xl font-semibold text-[#2a2a2a]">
               Service Area
             </h4>
-            <div className="mt-3 text-sm text-[#6f6a64] flex items-start gap-3">
+            <div className="mt-3  text-[#6f6a64] flex items-start gap-3">
               <MapPin className=" text-red-600" />
               <div>
                 <p className="font-semibold text-[#2a2a2a]">
-                  Northeast Wyoming
+                  50 Maverick Trail
                 </p>
-                <p>Buffalo, Sheridan and Gillette Wyoming</p>
+                {/* <p>Buffalo, Sheridan and Gillette Wyoming</p> */}
               </div>
             </div>
           </div>

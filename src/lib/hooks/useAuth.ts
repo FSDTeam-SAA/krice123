@@ -33,7 +33,10 @@ export default function useAuth() {
       };
     } catch (err) {
       console.error("Forgot password error:", err);
-      return { success: false, message: "Something went wrong. Please try again." };
+      return {
+        success: false,
+        message: "Something went wrong. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
@@ -61,7 +64,10 @@ export default function useAuth() {
       };
     } catch (err) {
       console.error("Verify OTP error:", err);
-      return { success: false, message: "Something went wrong. Please try again." };
+      return {
+        success: false,
+        message: "Something went wrong. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
@@ -87,7 +93,10 @@ export default function useAuth() {
       };
     } catch (err) {
       console.error("Resend OTP error:", err);
-      return { success: false, message: "Something went wrong. Please try again." };
+      return {
+        success: false,
+        message: "Something went wrong. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
@@ -97,7 +106,7 @@ export default function useAuth() {
   const handleResetPassword = async (
     newPassword: string,
     confirmPassword: string,
-    token: string
+    token: string,
   ): Promise<AuthResponse> => {
     setLoading(true);
     try {
@@ -117,7 +126,10 @@ export default function useAuth() {
       };
     } catch (err) {
       console.error("Reset password error:", err);
-      return { success: false, message: "Something went wrong. Please try again." };
+      return {
+        success: false,
+        message: "Something went wrong. Please try again.",
+      };
     } finally {
       setLoading(false);
     }

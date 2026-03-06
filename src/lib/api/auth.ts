@@ -14,6 +14,16 @@ export interface RegisterResponse {
   data?: any;
 }
 
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+}
+
 export const registerUser = async (
   data: RegisterData,
 ): Promise<RegisterResponse> => {
@@ -33,5 +43,36 @@ export const registerUser = async (
         error.response?.data?.message ||
         "Registration failed. Please try again.",
     };
+  }
+};
+
+export const changePassword = async (
+  data: ChangePasswordData,
+): Promise<ChangePasswordResponse> => {
+  try {
+    const response = await api.post("/auth/change-password", data);
+
+    return {
+      success: true,
+      message: response.data.message || "Password changed successfully",
+    };
+  } catch (error: any) {
+    console.error("Change password error:", error);
+    return {
+      success: false,
+      message:
+        error.response?.data?.message ||
+        "Failed to change password. Please try again.",
+    };
+  }
+};
+
+export const getUserProfile = async (): Promise<any> => {
+  try {
+    const response = await api.get("/auth/profile");
+    return response.data;
+  } catch (error: any) {
+    console.error("Get profile error:", error);
+    throw error;
   }
 };

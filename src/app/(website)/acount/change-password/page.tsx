@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useChangePassword } from "@/lib/hooks/useChangePassword";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function ChangePasswordPage() {
+  const { mutate: changePassword, isPending } = useChangePassword();
+
   const [formData, setFormData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -15,41 +19,117 @@ export default function ChangePasswordPage() {
     confirm: false,
   });
 
+  const [errors, setErrors] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    };
+    let isValid = true;
+
+    if (!formData.currentPassword) {
+      newErrors.currentPassword = "Current password is required";
+      isValid = false;
+    }
+
+    if (!formData.newPassword) {
+      newErrors.newPassword = "New password is required";
+      isValid = false;
+    } else if (formData.newPassword.length < 6) {
+      newErrors.newPassword = "Password must be at least 8 characters";
+      isValid = false;
+    }
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.newPassword !== formData.confirmPassword) {
-      alert("Passwords do not match");
+
+    if (!validateForm()) {
       return;
     }
-    console.log("Password changed:", formData);
+
+    changePassword(
+      {
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+      },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            setFormData({
+              currentPassword: "",
+              newPassword: "",
+              confirmPassword: "",
+            });
+          }
+        },
+      },
+    );
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="rounded-2xl bg-white p-6 shadow-sm md:p-8">
-        <h2 className="text-2xl font-semibold text-[#2a2a2a]">Change Password</h2>
-        <p className="mt-1 text-sm text-[#7a746e]">Update your password to keep your account secure</p>
+    <div className="bg-[#e8e3db] min-h-full p-8">
+      {/* Header with Title and Button */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-semibold text-[#2a2a2a]">Accounts</h1>
+        <button
+          type="submit"
+          form="password-form"
+          disabled={isPending}
+          className="rounded-md bg-[#6a8f3e] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#5b7c35] disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending ? "Saving..." : "Save"}
+        </button>
+      </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+      {/* Form Card */}
+      <div className="bg-white rounded-lg p-8 shadow-sm max-w-4xl">
+        <h2 className="text-xl font-semibold text-[#2a2a2a] mb-6">
+          Change password
+        </h2>
+
+        <form id="password-form" onSubmit={handleSubmit} className="space-y-5">
           {/* Current Password */}
           <label className="space-y-2">
-            <span className="text-sm font-medium text-[#2a2a2a]">Current Password</span>
+            <span className="text-sm font-medium text-[#2a2a2a]">
+              Current Password
+            </span>
             <div className="relative">
               <input
                 type={showPasswords.current ? "text" : "password"}
                 name="currentPassword"
-                placeholder="Enter current password"
+                placeholder="#############"
                 value={formData.currentPassword}
                 onChange={handleChange}
-                className="w-full rounded-lg border border-[#e6e1d8] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white"
+                disabled={isPending}
+                className={`w-full rounded-lg border ${errors.currentPassword ? "border-red-500" : "border-[#e6e1d8]"} bg-[#f7f4ef] px-3 py-2.5 pr-10 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white disabled:opacity-50`}
               />
               <button
                 type="button"
@@ -59,25 +139,35 @@ export default function ChangePasswordPage() {
                     current: !prev.current,
                   }))
                 }
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#7a746e] hover:text-[#2a2a2a]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a746e] hover:text-[#2a2a2a]"
               >
-                {showPasswords.current ? "Hide" : "Show"}
+                {showPasswords.current ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
             </div>
+            {errors.currentPassword && (
+              <p className="text-xs text-red-500">{errors.currentPassword}</p>
+            )}
           </label>
 
           {/* New Password & Confirm Password */}
           <div className="grid gap-4 md:grid-cols-2">
             <label className="space-y-2">
-              <span className="text-sm font-medium text-[#2a2a2a]">New Password</span>
+              <span className="text-sm font-medium text-[#2a2a2a]">
+                New Password
+              </span>
               <div className="relative">
                 <input
                   type={showPasswords.new ? "text" : "password"}
                   name="newPassword"
-                  placeholder="Enter new password"
+                  placeholder="#############"
                   value={formData.newPassword}
                   onChange={handleChange}
-                  className="w-full rounded-lg border border-[#e6e1d8] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white"
+                  disabled={isPending}
+                  className={`w-full rounded-lg border ${errors.newPassword ? "border-red-500" : "border-[#e6e1d8]"} bg-[#f7f4ef] px-3 py-2.5 pr-10 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white disabled:opacity-50`}
                 />
                 <button
                   type="button"
@@ -87,22 +177,32 @@ export default function ChangePasswordPage() {
                       new: !prev.new,
                     }))
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#7a746e] hover:text-[#2a2a2a]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a746e] hover:text-[#2a2a2a]"
                 >
-                  {showPasswords.new ? "Hide" : "Show"}
+                  {showPasswords.new ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
+              {errors.newPassword && (
+                <p className="text-xs text-red-500">{errors.newPassword}</p>
+              )}
             </label>
             <label className="space-y-2">
-              <span className="text-sm font-medium text-[#2a2a2a]">Confirm Password</span>
+              <span className="text-sm font-medium text-[#2a2a2a]">
+                Confirm New Password
+              </span>
               <div className="relative">
                 <input
                   type={showPasswords.confirm ? "text" : "password"}
                   name="confirmPassword"
-                  placeholder="Confirm password"
+                  placeholder="#############"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full rounded-lg border border-[#e6e1d8] bg-[#fbfaf8] px-3 py-2 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white"
+                  disabled={isPending}
+                  className={`w-full rounded-lg border ${errors.confirmPassword ? "border-red-500" : "border-[#e6e1d8]"} bg-[#f7f4ef] px-3 py-2.5 pr-10 text-sm text-[#3a3a3a] outline-none transition-colors focus:border-[#6a8f3e] focus:bg-white disabled:opacity-50`}
                 />
                 <button
                   type="button"
@@ -112,33 +212,19 @@ export default function ChangePasswordPage() {
                       confirm: !prev.confirm,
                     }))
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#7a746e] hover:text-[#2a2a2a]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a746e] hover:text-[#2a2a2a]"
                 >
-                  {showPasswords.confirm ? "Hide" : "Show"}
+                  {showPasswords.confirm ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-500">{errors.confirmPassword}</p>
+              )}
             </label>
-          </div>
-
-          {/* Password Requirements */}
-          <div className="rounded-lg bg-[#f9f7f3] p-4">
-            <p className="text-sm font-medium text-[#2a2a2a]">Password Requirements:</p>
-            <ul className="mt-2 space-y-1 text-xs text-[#7a746e]">
-              <li>• At least 8 characters long</li>
-              <li>• Contains at least one uppercase letter</li>
-              <li>• Contains at least one lowercase letter</li>
-              <li>• Contains at least one number</li>
-            </ul>
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="rounded-md bg-[#6a8f3e] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#5b7c35]"
-            >
-              Update Password
-            </button>
           </div>
         </form>
       </div>

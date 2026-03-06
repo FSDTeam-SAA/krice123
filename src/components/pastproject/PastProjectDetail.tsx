@@ -104,9 +104,10 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
                 <h3 className="text-xl font-semibold text-[#2a2a2a] mb-4">
                   Property Descriptions
                 </h3>
-                <p className="text-sm md:text-base leading-7 text-[#6f6a64] mb-6">
-                  {project.description}
-                </p>
+                <p
+                  className="text-sm md:text-base leading-7 text-[#6f6a64] mb-6"
+                  dangerouslySetInnerHTML={{ __html: project.description }}
+                />
               </div>
 
               <div className="pt-6 border-t border-[#e3ddd4]">

@@ -139,9 +139,9 @@ const Navbar = () => {
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-          <Button className="rounded-full bg-[#6a8f3e] px-3 py-2 text-sm text-white hover:bg-[#5b7c35] transition-colors">
+          {/* <Button className="rounded-full bg-[#6a8f3e] px-3 py-2 text-sm text-white hover:bg-[#5b7c35] transition-colors">
             Quote
-          </Button>
+          </Button> */}
         </div>
       </div>
 

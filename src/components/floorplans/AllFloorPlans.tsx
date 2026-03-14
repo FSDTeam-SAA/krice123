@@ -74,6 +74,7 @@ const AllFloorPlans = () => {
       </section>
     );
   }
+  console.log('fls',services)
 
   return (
     <section className="bg-[#f7f4ef] py-12 md:py-16">

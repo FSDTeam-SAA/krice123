@@ -47,13 +47,13 @@ const PastProjectDetail = ({ projectId }: PastProjectDetailProps) => {
         <div className="bg-white rounded-2xl border border-[#e3ddd4] overflow-hidden">
           <div className="p-6 md:p-10">
             <div className="text-center mb-8">
-              <div className="inline-block bg-[#C4CCBD] rounded-full px-4 py-2 mb-4 text-xs font-semibold text-[#6a8f3e]">
+              {/* <div className="inline-block bg-[#C4CCBD] rounded-full px-4 py-2 mb-4 text-xs font-semibold text-[#6a8f3e]">
                 <p className="flex items-center gap-2 ">
                   <BanIcon />
-                  {/* <span className="h-2 w-2 bg-[#6a8f3e] rounded-full" /> */}
+                  <span className="h-2 w-2 bg-[#6a8f3e] rounded-full" />
                   Minnesota • Major • Minory Group
                 </p>
-              </div>
+              </div> */}
               <h2 className="text-3xl md:text-4xl font-bold text-[#2a2a2a] mb-2">
                 {project.title}
               </h2>

@@ -26,7 +26,13 @@ const Footer = () => {
               />
             </Link>
             <p className="text-lg text-[#7a746e] mt-10">
-              Email: info@klondikeconstruction
+              Email:{" "}
+              <a
+                href="mailto:info@klondikeconstruction307.com"
+                className="underline underline-offset-4 hover:text-[#6a8f3e] transition-colors"
+              >
+                info@klondikeconstruction307.com
+              </a>
             </p>
             <Button
               asChild

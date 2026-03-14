@@ -93,10 +93,10 @@ const ContactForm = () => {
                     Email Address
                   </h3>
                   <a
-                    href="mailto:info@klondikeconstruction"
+                    href="mailto:info@klondikeconstruction307.com"
                     className="text-sm text-[#6a8f3e] hover:underline"
                   >
-                    info@klondikeconstruction
+                    info@klondikeconstruction307.com
                   </a>
                 </div>
               </div>

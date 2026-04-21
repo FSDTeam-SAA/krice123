@@ -80,6 +80,7 @@ const ProjectLeader = () => {
               image={member.image}
               name={member.name}
               role={member.role}
+              email={member.email}
               description={member.description}
             />
           ))}

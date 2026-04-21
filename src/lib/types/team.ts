@@ -1,6 +1,7 @@
 export interface TeamMember {
   _id: string;
   name: string;
+  email: string;
   role: string;
   description: string;
   image: string;

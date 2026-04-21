@@ -6,11 +6,13 @@ type ProjectLeaderCardProps = {
   image: string;
   name: string;
   role: string;
+  email: string;
   description: string;
 };
 
 const ProjectLeaderCard = ({
   image,
+  email,
   name,
   role,
   description,
@@ -24,11 +26,14 @@ const ProjectLeaderCard = ({
       <h3 className="text-lg font-bold mt-6 text-[#2F3628] md:text-2xl">
         {name}
       </h3>
+      <p className="text-sm font-medium text-[#444444] mt-1">
+        {email || ""}
+      </p>
       <h5 className="text-sm md:text-base leading-[120%] font-semibold text-[#2F3628]">{role}</h5>
       <div className="mt-4">
-        <SafeHTML 
-          htmlContent={description} 
-          className="prose-sm text-[#2F3628] leading-[150%]" 
+        <SafeHTML
+          htmlContent={description}
+          className="prose-sm text-[#2F3628] leading-[150%]"
         />
       </div>
     </article>

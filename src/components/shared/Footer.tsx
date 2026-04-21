@@ -34,6 +34,15 @@ const Footer = () => {
                 info@klondikeconstruction307.com
               </a>
             </p>
+            <p className="text-lg text-[#7a746e]">
+              Phone Number:{" "}
+              <a
+                href="tel:3072173680"
+                className="underline underline-offset-4 hover:text-[#6a8f3e] transition-colors"
+              >
+                307-217-3680
+              </a>
+            </p>
             <Button
               asChild
               className="rounded-md bg-[#6a8f3e] px-5 text-base font-bold text-white hover:bg-[#5b7c35]"

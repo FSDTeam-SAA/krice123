@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Bed, Bath, SquareIcon } from "lucide-react";
+// import { Bed, Bath, SquareIcon } from "lucide-react";
 
 type FloorPlanCardProps = {
   title: string;
@@ -20,9 +20,9 @@ const FloorPlanCard = ({
   title,
   description,
   image,
-  bedrooms,
-  bathrooms,
-  sqft,
+  // bedrooms,
+  // bathrooms,
+  // sqft,
   features,
   order,
   order2,
@@ -35,7 +35,7 @@ const FloorPlanCard = ({
             <h3 className="text-3xl font-bold text-[#2a2a2a] mb-3 group-hover:text-[#6a8f3e] transition-colors duration-300">
               {title}
             </h3>
-            <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-[#6f6a64] mb-6">
+            {/* <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-[#6f6a64] mb-6">
               <span className="flex items-center gap-2 bg-[#f7f4ef] px-3 py-1.5 rounded-full border border-[#e3ddd4]">
                 <Bed size={18} className="text-[#6a8f3e]" />
                 {bedrooms} Bed
@@ -48,7 +48,7 @@ const FloorPlanCard = ({
                 <SquareIcon size={18} className="text-[#6a8f3e]" />
                 {sqft.toLocaleString()} sqft
               </span>
-            </div>
+            </div> */}
           </div>
 
           <p

@@ -6,14 +6,14 @@ import React, { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { Menu, X, User, LogOut, UserCircle } from "lucide-react";
 
 const navLinks = [
@@ -64,11 +64,10 @@ const Navbar = () => {
             <Link
               key={link.label}
               href={link.href}
-              className={`transition-colors duration-200 font-semibold hover:text-[#2f3628] ${
-                isActive(link.href)
+              className={`transition-colors duration-200 font-semibold hover:text-[#2f3628] ${isActive(link.href)
                   ? "text-primary border-b-2 border-[#6a8f3e] pb-1"
                   : "text-[#595e53]"
-              }`}
+                }`}
             >
               {link.label}
             </Link>
@@ -76,7 +75,7 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden items-center gap-4 lg:flex">
-          {status === "loading" ? (
+          {/* {status === "loading" ? (
             <div className="h-10 w-10 animate-pulse rounded-full bg-[#e8e2d9]" />
           ) : session ? (
             <DropdownMenu>
@@ -123,7 +122,7 @@ const Navbar = () => {
             >
               Log in
             </Link>
-          )}
+          )} */}
           <Link href="/form">
             <Button className="rounded-full bg-[#6a8f3e] px-5 text-sm md:text-base text-white hover:bg-[#5b7c35] transition-colors">
               Get a Free Quote
@@ -152,11 +151,10 @@ const Navbar = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`block px-3 py-2 rounded-lg transition-colors duration-200 font-semibold ${
-                  isActive(link.href)
+                className={`block px-3 py-2 rounded-lg transition-colors duration-200 font-semibold ${isActive(link.href)
                     ? "bg-[#6a8f3e] text-white"
                     : "text-[#595e53] hover:bg-[#e8e2d9]"
-                }`}
+                  }`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}

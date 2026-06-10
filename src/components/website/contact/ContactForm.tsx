@@ -11,36 +11,29 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Mail,
   MapPin,
   Phone,
   Clock,
   Send,
-  MessageCircleQuestion,
 } from "lucide-react";
 
 const formSchema = z.object({
-  fullName: z.string().min(2, {
-    message: "Full name must be at least 2 characters.",
-  }),
-  phoneNumber: z.string().min(10, {
-    message: "Please enter a valid phone number.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  address: z.string().min(5, {
-    message: "Address must be at least 5 characters.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
+  youFirstName: z.string().min(1, { message: "First name is required." }),
+  youLastName: z.string().min(1, { message: "Last name is required." }),
+  spouseFirstName: z.string().min(1, { message: "Spouse's first name is required." }),
+  spouseLastName: z.string().min(1, { message: "Spouse's last name is required." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  streetAddress: z.string().min(1, { message: "Street address is required." }),
+  city: z.string().min(1, { message: "City is required." }),
+  state: z.string().min(1, { message: "State is required." }),
+  zipCode: z.string().min(1, { message: "Zip code is required." }),
+  phoneNumber: z.string().min(10, { message: "Please enter a valid 10-digit phone number." }),
+  projectDetails: z.string().min(10, { message: "Please describe your project (min 10 characters)." }),
+  timeline: z.string(),
 });
 
 const ContactForm = () => {
@@ -49,28 +42,52 @@ const ContactForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      phoneNumber: "",
+      youFirstName: "",
+      youLastName: "",
+      spouseFirstName: "",
+      spouseLastName: "",
       email: "",
-      address: "",
-      message: "",
+      streetAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      phoneNumber: "",
+      projectDetails: "",
+      timeline: "As soon as possible",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    sendContact(values, {
-      onSuccess: () => {
-        form.reset();
+    const fullName = `${values.youFirstName} ${values.youLastName}${
+      values.spouseFirstName || values.spouseLastName
+        ? ` (Spouse: ${values.spouseFirstName} ${values.spouseLastName})`
+        : ""
+    }`;
+    const address = `${values.streetAddress}, ${values.city}, ${values.state} ${values.zipCode}`;
+    const message = `Project Details: ${values.projectDetails}\nTimeline: ${values.timeline}`;
+
+    sendContact(
+      {
+        fullName,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        address,
+        message,
       },
-    });
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+      }
+    );
   }
 
   return (
     <section className="bg-[#f7f4ef] py-12 md:py-16 lg:py-20">
       <div className="container mx-auto px-4">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
           {/* Left Side - Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-24">
             <div>
               <h2 className="text-2xl font-bold text-[#2a2a2a] md:text-3xl lg:text-4xl">
                 Get in touch with us
@@ -109,8 +126,6 @@ const ContactForm = () => {
                   <h3 className="font-semibold text-[#2a2a2a]">Location</h3>
                   <p className="text-sm text-[#7a746e]">
                     50 Maverick Trail
-                    <br />
-                    {/* 50 Magazine Trail Buffalo, WY 82834 */}
                   </p>
                 </div>
               </div>
@@ -137,29 +152,12 @@ const ContactForm = () => {
                 </div>
               </div>
             </div>
-
-            {/* Bottom Icons */}
-            {/* <div className="flex gap-4 pt-4">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#2a2a2a] shadow-lg">
-                <div className="flex items-center justify-center rounded-full bg-[#f4c430] p-3">
-                  <MessageCircleQuestion className="h-6 w-6 text-[#2a2a2a]" />
-                </div>
-              </div>
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#6a8f3e] shadow-lg">
-                <div className="flex items-center justify-center">
-                  <span className="text-xl font-bold text-white">Q&A</span>
-                </div>
-              </div>
-            </div> */}
           </div>
 
           {/* Right Side - Contact Form */}
           <div className="rounded-2xl border border-[#e3ddd4] bg-white p-6 shadow-lg md:p-8">
-            <div className="mb-6 flex items-center gap-2">
-              {/* <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f4c430]">
-                <MessageCircleQuestion className="h-5 w-5 text-[#2a2a2a]" />
-              </div> */}
-              <h3 className="text-xl font-semibold text-[#2a2a2a]">
+            <div className="mb-6">
+              <h3 className="text-2xl md:text-3xl font-semibold text-[#2a2a2a]">
                 Contact Information
               </h3>
             </div>
@@ -167,115 +165,310 @@ const ContactForm = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5"
+                className="space-y-6"
               >
-                <div className="grid gap-5 md:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="fullName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium text-[#2a2a2a]">
-                          Full Name <span className="text-red-500">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your First Name"
-                            {...field}
-                            className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-medium text-[#2a2a2a]">
-                          Phone Number <span className="text-red-500">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter Your First Name"
-                            {...field}
-                            className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                {/* Name (You) */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Name (You) <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="youFirstName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <span className="mt-1 block text-xs text-[#7a746e]">
+                            First Name
+                          </span>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="youLastName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <span className="mt-1 block text-xs text-[#7a746e]">
+                            Last Name
+                          </span>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium text-[#2a2a2a]">
-                        Email Address <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Your Email Address"
-                          {...field}
-                          className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Name (Spouse) */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Name (Spouse) <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="spouseFirstName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <span className="mt-1 block text-xs text-[#7a746e]">
+                            First Name
+                          </span>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="spouseLastName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <span className="mt-1 block text-xs text-[#7a746e]">
+                            Last Name
+                          </span>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
 
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium text-[#2a2a2a]">
-                        Address <span className="text-red-500">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter Your Address"
-                          {...field}
-                          className="border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Email */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Email <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2 sm:max-w-md">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="email"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
 
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium text-[#2a2a2a]">
-                        You Message
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell us how we can help you"
-                          {...field}
-                          rows={5}
-                          className="resize-none border-[#e3ddd4] bg-[#f7f4ef] focus-visible:ring-[#6a8f3e]"
+                {/* Address */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Address <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2 space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="streetAddress"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <span className="mt-1 block text-xs text-[#7a746e]">
+                            Street Address
+                          </span>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                      <FormField
+                        control={form.control}
+                        name="city"
+                        render={({ field }) => (
+                          <FormItem className="space-y-0">
+                            <FormControl>
+                              <input
+                                type="text"
+                                {...field}
+                                required
+                                className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                              />
+                            </FormControl>
+                            <span className="mt-1 block text-xs text-[#7a746e]">
+                              City
+                            </span>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="state"
+                        render={({ field }) => (
+                          <FormItem className="space-y-0">
+                            <FormControl>
+                              <input
+                                type="text"
+                                {...field}
+                                required
+                                className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                              />
+                            </FormControl>
+                            <span className="mt-1 block text-xs text-[#7a746e]">
+                              State
+                            </span>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="zipCode"
+                        render={({ field }) => (
+                          <FormItem className="space-y-0">
+                            <FormControl>
+                              <input
+                                type="text"
+                                {...field}
+                                required
+                                className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                              />
+                            </FormControl>
+                            <span className="mt-1 block text-xs text-[#7a746e]">
+                              Zip Code
+                            </span>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile Number */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Mobile Number <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2 sm:max-w-xs">
+                    <FormField
+                      control={form.control}
+                      name="phoneNumber"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <input
+                              type="text"
+                              {...field}
+                              required
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Project Details */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    Tell us a little about your project{" "}
+                    <span className="text-red-500">*</span>
+                  </span>
+                  <div className="mt-2">
+                    <FormField
+                      control={form.control}
+                      name="projectDetails"
+                      render={({ field }) => (
+                        <FormItem className="space-y-0">
+                          <FormControl>
+                            <textarea
+                              {...field}
+                              required
+                              rows={4}
+                              className="w-full border border-[#2a2a2a] bg-white px-3 py-2 text-sm text-[#2a2a2a] outline-none focus:border-[#6a8f3e] resize-y"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Timeline Radio Buttons */}
+                <div>
+                  <span className="text-sm font-semibold text-[#2a2a2a]">
+                    How soon would you like to get started?
+                  </span>
+                  <div className="mt-3 space-y-2">
+                    {[
+                      "As soon as possible",
+                      "3-6 months",
+                      "6-12 months",
+                      "12+ months",
+                    ].map((option) => (
+                      <label
+                        key={option}
+                        className="flex items-center gap-3 cursor-pointer text-sm text-[#2a2a2a]"
+                      >
+                        <input
+                          type="radio"
+                          name="timeline"
+                          value={option}
+                          checked={form.watch("timeline") === option}
+                          onChange={() => form.setValue("timeline", option)}
+                          className="h-4 w-4 border-[#2a2a2a] text-[#6a8f3e] focus:ring-[#6a8f3e]"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <span>{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
                 <Button
                   type="submit"
                   disabled={isPending}
-                  className="w-full rounded-lg bg-[#6a8f3e] py-6 text-base font-semibold text-white transition-all hover:bg-[#5b7c35] disabled:opacity-50"
+                  className="w-full rounded-md bg-[#6a8f3e] text-white hover:bg-[#5b7c35] disabled:opacity-50 py-6 text-base font-semibold transition-all"
                 >
                   <Send className="mr-2 h-5 w-5" />
                   {isPending ? "Sending..." : "Send Message"}
